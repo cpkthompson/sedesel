@@ -11,9 +11,10 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 
+import os
+
 import dj_database_url
 import django_heroku
-import os
 from decouple import config
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -24,6 +25,8 @@ ENVIRONMENT = config('ENVIRONMENT', default='local')
 if ENVIRONMENT != 'local':
     import sentry_sdk
     from sentry_sdk.integrations.django import DjangoIntegration
+    from sentry_sdk.integrations.redis import RedisIntegration
+    from sentry_sdk.integrations.flask import FlaskIntegration
 
     sentry_sdk.init(
         send_default_pii=True,
@@ -204,6 +207,6 @@ if ENVIRONMENT != 'local':
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     CSRF_COOKIE_HTTPONLY = True
-    X_FRAME_OPTIONS = 'DENY'
+    X_FRAME_OPTIONS = 'SAME_ORIGIN'
 
 USER_AGENTS_CACHE = None
