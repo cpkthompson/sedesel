@@ -6,35 +6,209 @@
     <meta charset="utf-8"/>
     <title>
         {% block title %}
-        {% if self.seo_title %}{{ self.seo_title }}{% else %}{{ self.title }}{% endif %}
+            {% if self.seo_title %}{{ self.seo_title }}{% else %}{{ self.title }}{% endif %}
         {% endblock %}
         {% block title_suffix %}
-        {% with self.get_site.site_name as site_name %}
-        {% if site_name %}- {{ site_name }}{% endif %}
-        {% endwith %}
+            {% with self.get_site.site_name as site_name %}
+                {% if site_name %}- {{ site_name }}{% endif %}
+            {% endwith %}
         {% endblock %}
     </title>
     <meta content="" name="description"/>
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
 
-    {# Global stylesheets #}
-    <link href="{% static 'css/styles.css' %}" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
 
-    {% block extra_css %}
-    {# Override this in templates to add extra stylesheets #}
+    <link rel="stylesheet" href="{% static 'css/w3.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.3.7/dist/vuetify.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;900&display=swap"
+          rel="stylesheet">
+    <style>
+        @font-face {
+            font-family: 'TTCommons-Regular';
+            src: url('{% static 'fonts/tt/TTCommons-Regular.ttf' %}') format('truetype');
+        }
+
+        @font-face {
+            font-family: 'TTCommons-Bold';
+            src: url('{% static 'fonts/tt/TTCommons-Bold.ttf' %}') format('truetype');
+        }
+
+        div, body, v-app {
+            font-family: "TTCommons-Regular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
+            font-size: 18px;
+        }
+
+        h1, h2, h3, h4, h5, h6, strong, .heavy-font {
+            font-family: 'Playfair Display', serif, "TTCommons-Bold", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
+            font-weight: 900;
+        }
+
+        .light-font {
+            font-family: 'Playfair Display', serif, "TTCommons-Bold", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
+            font-weight: 400;
+        }
+
+        .bgoverlay {
+            background: rgba(0, 0, 0, 0.5);
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.x/dist/vue.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.js"></script>
+
+    {% block extra_head %}
+
     {% endblock %}
 </head>
 
-<body class="{% block body_class %}{% endblock %}">
+<body>
 {% wagtailuserbar %}
+<div id="app" style="display: none">
+    <v-app>
+        <v-progress-linear :active="loading" indeterminate style="position: fixed;top: 0;z-index: 100"
+                           height="5px"></v-progress-linear>
 
-{% block content %}{% endblock %}
+        {% if messages %}
+            {{ message.type }}
+            {% for message in messages %}
+                <div class="{% if message.level_tag == 'success' %}w3-green{% elif message.level_tag == 'error' %}w3-red{% elif message.level_tag == 'info' %}w3-pale-green{% endif %} w3-padding-large w3-center w3-animate-top trans-400">
+                    {{ message|safe }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        <nav class="navbar w3-padding" role="navigation"
+             style="padding-left: 16px;padding-right: 5px;"
+             aria-label="main navigation">
+            <div class="navbar-brand">
+                <div class="navbar-item is-paddingless">
 
-{# Global javascript #}
-<script src="{% static 'js/script.js' %}" type="text/javascript"></script>
+                    <a class="w3-hover-white is-paddingless w3-text-black w3-large"
+                       href="/">
+                        <span class="w3-hide-small menu-label has-text-weight-bold is-marginless w3-text-black">Sedesel</span>
+                        <span class="w3-hide-large w3-hide-medium w3-small menu-label has-text-weight-bold is-marginless w3-text-black">Sedesel</span>
+                        &nbsp;
+                    </a>
+                </div>
+                &nbsp;
+                <a role="button" class="navbar-burger burger w3-round-large" aria-label="menu"
+                   aria-expanded="false"
+                   data-target="navbarBasicExample">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
 
-{% block extra_js %}
-{# Override this in templates to add extra javascript #}
+            <div id="navbarBasicExample" class="navbar-menu w3-round-xxlarge">
+                <div class="navbar-end w3-white w3-round-xxlarge">
+                    <div class="navbar-item w3-center">
+                        &nbsp;
+                        <v-btn :depressed="false" :ripple="false" rounded text href="/"
+                               class="has-text-weight-bold w3-border-black w3-center ">
+                            <span class="w3-border-bottom w3-border-black">
+                                Home
+                            </span>
+                        </v-btn>
+                        &nbsp;
+                        <v-btn :depressed="false" :ripple="false" rounded text href=""
+                               class="has-text-weight-bold w3-border-black w3-center ">
+                            <span class="w3-border-bottom w3-border-black">
+                                About
+                            </span>
+                        </v-btn>
+                        &nbsp;
+                        <v-btn :depressed="false" :ripple="false" rounded text
+                               href=""
+                               class="has-text-weight-bold w3-border-black w3-center ">
+                            <span class="w3-border-bottom w3-border-black">
+                                Contact
+                            </span>
+                        </v-btn>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div style="min-height: 90vh" class="w3-light-grey">
+            {% block content %}
+
+            {% endblock %}
+        </div>
+        <footer class="hero is-small w3-topbar w3-border-pink">
+            <div class="hero-body w3-content w3-padding-64">
+                <h1 class="w3-xxlarge w3-center">Sedesel Publication</h1>
+                <h3 class="w3-center has-text-weight-light light-font">
+                    Adenta, Frafrahaha
+                    <br>
+                    Accra, Ghana
+                </h3>
+                <div class="w3-center w3-margin-top">
+
+                    <a href="" class="light-font w3-large w3-border-bottom">Privacy Policy</a>
+                    &nbsp;&bull;&nbsp;
+                    <a href="" class="light-font w3-large w3-border-bottom">Sitemap</a>
+                    <br>
+                    <br>
+                    <span class="light-font"> © {{ current_year }} Sedesel Publications. All rights reserved</span>
+                </div>
+
+                <br>
+            </div>
+
+        </footer>
+    </v-app>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // Get all "navbar-burger" elements
+        const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+
+        // Check if there are any navbar burgers
+        if ($navbarBurgers.length > 0) {
+
+            // Add a click event on each of them
+            $navbarBurgers.forEach(el => {
+                el.addEventListener('click', () => {
+
+                    // Get the target from the "data-target" attribute
+                    const target = el.dataset.target;
+                    const $target = document.getElementById(target);
+
+                    // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
+                    el.classList.toggle('is-active');
+                    $target.classList.toggle('is-active');
+
+                });
+            });
+        }
+
+    });
+
+    let vueApp = new Vue({
+        el: '#app',
+        vuetify: new Vuetify(),
+        delimiters: ['[[', ']]'],
+        data() {
+            return {
+                loading: false,
+            };
+        },
+        watch: {},
+        computed: {},
+        mounted: function () {
+            document.getElementById('app').style.display = '';
+        },
+        methods: {
+            goTo(url) {
+                window.location.href = url;
+            },
+        }
+    });
+</script>
+{% block extra_body %}
 {% endblock %}
 </body>
 </html>

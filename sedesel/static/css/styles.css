@@ -1,0 +1,62 @@
+.fit-content {
+    max-width: fit-content;
+    margin: auto;
+}
+
+.navbar-item {
+    text-transform: uppercase;
+}
+
+.trans-400 {
+    transition: 400ms;
+}
+
+.is-patel-yellow {
+    background-color: #e0e0db;
+    color: black;
+}
+
+.is-dark {
+    background-color: #363636;
+    color: #fff;
+}
+
+.theme--dark.v-app-bar.v-toolbar.v-sheet {
+    background-color: #000;
+}
+
+.min100vh {
+    min-height: 100vh
+}
+
+.has-cursor-pointer {
+    cursor: pointer;
+}
+
+p {
+    font-size: inherit;
+    margin-bottom: 20px;
+}
+
+.is-underline {
+    text-decoration: underline;
+}
+
+
+@media only screen and (max-width: 768px) {
+    .w3-xxxlarge {
+        font-size: 32px !important;
+    }
+
+    .w3-xxlarge {
+        font-size: 24px !important;
+    }
+
+    .w3-xlarge {
+        font-size: 20px !important;
+    }
+
+    .w3-large {
+        font-size: 16px !important;
+    }
+}
