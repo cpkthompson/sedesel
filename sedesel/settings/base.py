@@ -11,10 +11,9 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 
-import os
-
 import dj_database_url
 import django_heroku
+import os
 from decouple import config
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -22,8 +21,19 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 ENVIRONMENT = config('ENVIRONMENT', default='local')
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
+if ENVIRONMENT != 'local':
+    import sentry_sdk
+    from sentry_sdk.integrations.django import DjangoIntegration
+
+    sentry_sdk.init(
+        send_default_pii=True,
+        dsn=config('SENTRY_DSN',
+                   default=config('SENTRY_DSN', default='SENTRY_DSN'), ),
+        traces_sample_rate=1.0,
+        integrations=[DjangoIntegration(), RedisIntegration(), FlaskIntegration()],
+        request_bodies="always",
+        environment=ENVIRONMENT,
+    )
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY', default='SECRET_KEY')
