@@ -84,10 +84,18 @@ class CarouselBlock(StructBlock):
 
 
 class ParagraphBlock(StructBlock):
-    paragraph = RichTextBlock()
+    text = RichTextBlock()
 
     class Meta:
         template = "blocks/paragraph.html"
+
+
+class HalfTitleTextBlock(StructBlock):
+    heading = HeadingBlock()
+    paragraph = ParagraphBlock()
+
+    class Meta:
+        template = "blocks/half_title_text.html"
 
 
 class StandardStreamBlock(StreamBlock):
@@ -97,4 +105,5 @@ class StandardStreamBlock(StreamBlock):
     grid_of_cards = GridOfCardsBlock()
     heading = HeadingBlock()
     paragraph = ParagraphBlock()
-    embed_block = EmbedBlock()
+    embed = EmbedBlock()
+    half_title_text = HalfTitleTextBlock()
