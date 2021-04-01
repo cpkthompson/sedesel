@@ -1,0 +1,10 @@
+{% load wagtailimages_tags wagtailcore_tags static %}
+{% image self.image original as image %}
+<v-carousel height="700px">
+    {% for carousel in self.carousel_items %}
+        <v-carousel-item>
+            {% include_block carousel %}
+        </v-carousel-item>
+    {% endfor %}
+</v-carousel>
+

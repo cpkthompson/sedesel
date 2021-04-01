@@ -1,0 +1,24 @@
+{% load wagtailimages_tags wagtailcore_tags static %}
+{% load static wagtailuserbar wagtailcore_tags %}
+
+<v-card tile flat>
+    {% image self.image original as image %}
+    <v-img src="{{ image.url }}" height="700px">
+        <div class="{% if self.image %}bgoverlay w3-text-white{% else %}w3-text-black{% endif %} w3-display-container"
+             style="height: 700px">
+            <div class="{{ self.container_alignment }} w3-padding-16">
+                <h1 class="w3-xxxlarge has-text-weight-bold {{ self.text_alignment }}">{{ self.title }}</h1>
+                {% if self.subtitle %}
+                    <p class="subtitle w3-xlarge {{ self.text_alignment }}" style="color: inherit">
+                        {{ self.subtitle }}
+                    </p>
+                {% endif %}
+                <div class="{{ self.text_alignment }}">
+                    {% for button in self.buttons %}
+                        {% include_block button %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </v-img>
+</v-card>

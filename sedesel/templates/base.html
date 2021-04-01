@@ -1,4 +1,4 @@
-{% load static wagtailuserbar %}
+{% load static wagtailuserbar wagtailcore_tags %}
 
 <!DOCTYPE html>
 <html class="no-js" lang="en">
@@ -87,8 +87,8 @@
 
                     <a class="w3-hover-white is-paddingless w3-text-black w3-large"
                        href="/">
-                        <span class="w3-hide-small menu-label has-text-weight-bold is-marginless w3-text-black">Sedesel</span>
-                        <span class="w3-hide-large w3-hide-medium w3-small menu-label has-text-weight-bold is-marginless w3-text-black">Sedesel</span>
+                        <span class="w3-hide-small menu-label has-text-weight-bold is-marginless w3-text-black">{{ self.get_site.site_name }}</span>
+                        <span class="w3-hide-large w3-hide-medium w3-small menu-label has-text-weight-bold is-marginless w3-text-black">{{ self.get_site.site_name }}</span>
                         &nbsp;
                     </a>
                 </div>
@@ -105,28 +105,25 @@
             <div id="navbarBasicExample" class="navbar-menu w3-round-xxlarge">
                 <div class="navbar-end w3-white w3-round-xxlarge">
                     <div class="navbar-item w3-center">
-                        &nbsp;
                         <v-btn :depressed="false" :ripple="false" rounded text href="/"
                                class="has-text-weight-bold w3-border-black w3-center ">
                             <span class="w3-border-bottom w3-border-black">
                                 Home
                             </span>
                         </v-btn>
-                        &nbsp;
-                        <v-btn :depressed="false" :ripple="false" rounded text href=""
-                               class="has-text-weight-bold w3-border-black w3-center ">
-                            <span class="w3-border-bottom w3-border-black">
-                                About
-                            </span>
-                        </v-btn>
-                        &nbsp;
-                        <v-btn :depressed="false" :ripple="false" rounded text
-                               href=""
-                               class="has-text-weight-bold w3-border-black w3-center ">
-                            <span class="w3-border-bottom w3-border-black">
-                                Contact
-                            </span>
-                        </v-btn>
+                        {% for child in self.get_site.root_page.get_children %}
+                            {% if child.show_in_menus %}
+                                <v-btn :depressed="false" :ripple="false" rounded text href="{% pageurl child %}"
+                                       class="has-text-weight-bold w3-border-black w3-center ">
+                                    <span class="w3-border-bottom w3-border-black">
+                                        {{ child.title }}
+                                    </span>
+                                </v-btn>
+                                &nbsp;
+                            {% endif %}
+
+                        {% endfor %}
+
                     </div>
                 </div>
             </div>
