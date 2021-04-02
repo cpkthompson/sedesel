@@ -61,7 +61,7 @@ INSTALLED_APPS = [
     'wagtail.admin',
     'wagtail.core',
     'wagtail.contrib.modeladmin',
-
+    'wagtail.contrib.settings',
     'wagtail.contrib.styleguide',
 
     'modelcluster',
@@ -193,7 +193,9 @@ MEDIA_URL = '/media/'
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 100000
 # Wagtail settings
 
-WAGTAIL_SITE_NAME = "sedesel"
+WAGTAIL_SITE_NAME = config('WAGTAIL_SITE_NAME', default='sedesel')
+
+WAGTAIL_AUTO_UPDATE_PREVIEW = True
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash

@@ -6,7 +6,9 @@
             <form action="{% pageurl page %}" method="POST" role="form">
                 {% csrf_token %}
                 {{ form|bulma }}
-                <input type="submit" class="w3-btn" value="{{ page.submit_cta }}">
+                <v-btn type="submit" rounded dark>
+                    {{ page.submit_cta }}
+                </v-btn>
             </form>
         </div>
     </section>
