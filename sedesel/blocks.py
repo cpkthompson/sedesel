@@ -18,8 +18,8 @@ class HeadingBlock(StructBlock):
 
 
 class ButtonBlock(StructBlock):
-    text = CharBlock(required=False)
-    page = PageChooserBlock(required=False)
+    text = CharBlock(required=True)
+    page = PageChooserBlock(required=True)
 
     class Meta:
         template = "blocks/button.html"
