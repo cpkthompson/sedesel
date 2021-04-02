@@ -60,6 +60,11 @@ class Favicon(models.Model):
 
 @register_setting
 class Configuration(BaseSetting):
+    address_1 = models.CharField(max_length=140, blank=True)
+    address_2 = models.CharField(max_length=140, blank=True)
+    city = models.CharField(max_length=140, blank=True)
+    country = models.CharField(max_length=140, blank=True)
+
     facebook = models.URLField(
         help_text='Your Facebook page URL', blank=True)
     instagram = models.CharField(
@@ -77,6 +82,10 @@ class Configuration(BaseSetting):
     ]
 
     site_setup = [
+        FieldPanel('address_1'),
+        FieldPanel('address_2'),
+        FieldPanel('city'),
+        FieldPanel('country'),
         FieldPanel('favicons'),
         FieldPanel('primary_color'),
         FieldPanel('secondary_color'),

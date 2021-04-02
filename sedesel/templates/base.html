@@ -135,7 +135,7 @@
         </div>
         <footer class="hero is-small w3-topbar w3-border-pink">
             <div class="hero-body w3-content w3-padding-64">
-                <h1 class="w3-xxlarge w3-center">Sedesel Publication</h1>
+                <h1 class="w3-xxlarge w3-center">{{ self.get_site.site_name }}</h1>
                 <h3 class="w3-center has-text-weight-light light-font">
                     Adenta, Frafrahaha
                     <br>
@@ -148,7 +148,8 @@
                     <a href="" class="light-font w3-large w3-border-bottom">Sitemap</a>
                     <br>
                     <br>
-                    <span class="light-font"> © {{ current_year }} Sedesel Publications. All rights reserved</span>
+                    <span class="light-font"> © {{ current_year }} {{ self.get_site.site_name }}. All rights
+                        reserved</span>
                 </div>
 
                 <br>
