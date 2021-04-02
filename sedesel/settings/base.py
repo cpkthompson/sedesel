@@ -75,6 +75,9 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+
+    # sedesel third party apps
+    'bulma'
 ]
 
 SITE_ID = 1

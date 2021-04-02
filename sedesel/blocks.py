@@ -38,6 +38,10 @@ class CardBlock(StructBlock):
 
 class IntroducerBlock(StructBlock):
     image = ImageChooserBlock(required=False)
+    image_position = ChoiceBlock(default='left', choices=[
+        ('left', 'Left'),
+        ('right', 'Right'),
+    ], blank=True, required=True)
     title = CharBlock(required=True)
     text = TextBlock(required=False, max_length=450)
     buttons = ListBlock(ButtonBlock)

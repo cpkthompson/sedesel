@@ -6,6 +6,9 @@
         <h1 style="font-weight: 900"
             class="w3-xxlarge w3-center margin-0">{{ self.title }}</h1>
         <div class="columns is-multiline">
+            {% if self.image and self.image_position == 'left' %}
+                {% include 'blocks/introducer_image.html' %}
+            {% endif %}
             <div class="column is-6">
                 <br class="w3-hide-small">
                 <br class="w3-hide-small">
@@ -13,13 +16,9 @@
                     {{ self.text|linebreaksbr }}
                 </div>
             </div>
-            <div class="column is-6 w3-center w3-padding-large">
-                <br class="w3-hide-small">
-                <br class="w3-hide-small">
-                {% image self.image fill-480x480 as image %}
-                <img src="{{ image.url }}" alt="">
-                <br>
-            </div>
+            {% if self.image and self.image_position == 'right' %}
+                {% include 'blocks/introducer_image.html' %}
+            {% endif %}
             <div class="column is-12 w3-center">
                 {% for button in self.buttons %}
                     {% include_block button %}

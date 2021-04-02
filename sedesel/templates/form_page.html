@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags bulma_tags %}
+{% block content %}
+    <section class="columns w3-padding-32 w3-container">
+        <div class="column is-6 is-offset-3">
+            <form action="{% pageurl page %}" method="POST" role="form">
+                {% csrf_token %}
+                {{ form|bulma }}
+                <input type="submit" class="w3-btn" value="{{ page.submit_cta }}">
+            </form>
+        </div>
+    </section>
+{% endblock content %}

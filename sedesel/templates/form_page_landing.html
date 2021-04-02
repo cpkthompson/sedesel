@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags bulma_tags %}
+
+{% block content %}
+    {{ page.thank_you_text|richtext|linebreaksbr }}
+{% endblock content %}
