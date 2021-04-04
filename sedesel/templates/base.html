@@ -116,7 +116,7 @@
                             <v-btn :depressed="false" :ripple="false" rounded text
                                    href="{% pageurl self.get_site.root_page %}"
                                    class="has-text-weight-bold w3-border-black w3-center ">
-                                self.get_site.root_page
+                                {{ self.get_site.root_page.title }}
                             </v-btn>
                         {% endif %}
                         {% for child in self.get_site.root_page.get_children %}
