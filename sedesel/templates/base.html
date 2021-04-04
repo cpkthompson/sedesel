@@ -91,7 +91,7 @@
                         {% if settings.home.Configuration.logo %}
 
                             {% image settings.home.Configuration.logo original as logo %}
-                            <img src="{{ logo.url }}" style="width: 70px">
+                            <img src="{{ logo.url }}" style="max-width: 70px">
                             &nbsp;
                         {% endif %}
                         <span class="w3-hide-small menu-label has-text-weight-bold is-marginless w3-text-black">{{ self.get_site.site_name }}</span>
