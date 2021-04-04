@@ -10,7 +10,7 @@
                 <h1 class="w3-xxxlarge has-text-weight-bold {{ self.text_alignment }}">{{ self.title }}</h1>
                 {% if self.subtitle %}
                     <p class="subtitle w3-xlarge {{ self.text_alignment }}" style="color: inherit">
-                        {{ self.subtitle }}
+                        {{ self.subtitle|linebreaksbr }}
                     </p>
                 {% endif %}
                 <div class="{{ self.text_alignment }}">
