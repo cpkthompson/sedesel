@@ -1,17 +1,13 @@
 {% load wagtailimages_tags wagtailcore_tags static %}
 {% load static wagtailuserbar wagtailcore_tags %}
 
-<section class="w3-container w3-white w3-padding-64">
-    <div class="w3-content">
-        <h1 style="font-weight: 900"
-            class="w3-xxlarge w3-center margin-0">{{ self.title }}</h1>
+<section class="w3-container {{ self.outer_classes }}">
+    <div class="{{ self.inner_classes }}">
         <div class="columns is-multiline">
             {% if self.image and self.image_position == 'left' %}
                 {% include 'blocks/introducer_image.html' %}
             {% endif %}
             <div class="column is-6">
-                <br class="w3-hide-small">
-                <br class="w3-hide-small">
                 <div class="w3-xlarge w3-text-black w3-padding">
                     {{ self.text|linebreaksbr }}
                 </div>

@@ -75,7 +75,6 @@ class IntroducerBlock(StructBlock):
         ('left', 'Left'),
         ('right', 'Right'),
     ], blank=True, required=True)
-    title = CharBlock(required=True)
     text = TextBlock(required=False)
     buttons = ListBlock(ButtonBlock)
 
