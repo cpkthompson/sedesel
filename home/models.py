@@ -16,9 +16,13 @@ from wagtail.snippets.models import register_snippet
 from wagtailstreamforms.blocks import WagtailFormBlock
 
 
+class ClassBlock(StructBlock):
+    inner = CharBlock(required=False)
+    outer = CharBlock(required=False)
+
+
 class HeadingBlock(StructBlock):
-    outer_classes = CharBlock(required=False)
-    inner_classes = CharBlock(required=False)
+    classes = ClassBlock()
     title = CharBlock(required=True)
     size = ChoiceBlock(choices=[
         ('', 'Select a header size'),
@@ -70,6 +74,7 @@ class CardBlock(StructBlock):
 
 
 class IntroducerBlock(StructBlock):
+    classes = ClassBlock()
     image = ImageBlock()
     image_position = ChoiceBlock(default='left', choices=[
         ('left', 'Left'),
