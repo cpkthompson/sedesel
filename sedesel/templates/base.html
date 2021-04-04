@@ -54,7 +54,7 @@
         }
 
         .bgoverlay {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.4);
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
@@ -158,76 +158,76 @@
             {% endblock %}
         </div>
 
-        <footer class="hero">
-            <div class="hero-body">
-                <div class="container w3-content">
-                    <div class="columns is-multiline is-mobile">
-                        <div class="column is-6-mobile">
-                            <img src="{{ logo.url }}" style="width: 100px" class="w3-margin-bottom">
-                            &nbsp;
-                            <h1 class="w3-xlarge w3-margin-bottom">
-                                {{ self.get_site.site_name }}
-                            </h1>
-                            <div>
-                                {{ settings.home.Configuration.address_1 }}
-                                <br>
-                                {% if settings.home.Configuration.address_2 %}
-                                    {{ settings.home.Configuration.address_2 }}
-                                    <br>
-                                {% endif %}
-                                {{ settings.home.Configuration.city }}, {{ settings.home.Configuration.country }}
-                            </div>
-                        </div>
-                        <div class="column is-6-mobile">
+        <footer class="w3-padding w3-padding-32">
+            <div class="container">
+                <div class="columns is-multiline is-mobile">
+                    <div class="column is-6-mobile">
+                        <img src="{{ logo.url }}" style="width: 100px" class="w3-margin-bottom">
+                        &nbsp;
+                        <h1 class="w3-xlarge w3-margin-bottom">
+                            {{ self.get_site.site_name }}
+                        </h1>
+                        <div>
+                            {{ settings.home.Configuration.address_1 }}
                             <br>
-                        </div>
-                        <div class="column is-6-mobile">
-                            {% for child in self.get_site.root_page.get_children %}
-                                {% if child.show_in_menus %}
-                                    <a class="footer-link w3-border-bottom w3-border-dark-gray w3-hover-border-white trans-400">{{ child }}</a>
-                                    <br>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                        <div class="column is-6-mobile">
-                            {% if settings.home.Configuration.linkedin %}
-                                <a target="_blank" rel="noopener noreferrer nofollow"
-                                   href="{{ settings.home.Configuration.linkedin }}"
-                                   class="footer-link w3-border-bottom w3-border-dark-gray w3-hover-border-white trans-400">LinkedIn</a>
+                            {% if settings.home.Configuration.address_2 %}
+                                {{ settings.home.Configuration.address_2 }}
                                 <br>
                             {% endif %}
-                            {% if settings.home.Configuration.facebook %}
-                                <a target="_blank" rel="noopener noreferrer nofollow"
-                                   href="{{ settings.home.Configuration.facebook }}"
-                                   class="footer-link w3-border-bottom w3-border-dark-gray w3-hover-border-white trans-400">Facebook</a>
-                                <br>
-                            {% endif %}
-                            {% if settings.home.Configuration.twitter %}
-                                <a target="_blank" rel="noopener noreferrer nofollow"
-                                   href="{{ settings.home.Configuration.twitter }}"
-                                   class="footer-link w3-border-bottom w3-border-dark-gray w3-hover-border-white trans-400">Twitter</a>
-                                <br>
-                            {% endif %}
-                            {% if settings.home.Configuration.instagram %}
-                                <a target="_blank" rel="noopener noreferrer nofollow"
-                                   href="{{ settings.home.Configuration.instagram }}"
-                                   class="footer-link w3-border-bottom w3-border-dark-gray w3-hover-border-white trans-400">Instagram</a>
-                                <br>
-                            {% endif %}
-                            <br>
-                            <br>
+                            {{ settings.home.Configuration.city }}, {{ settings.home.Configuration.country }}
                         </div>
                     </div>
-                    <br>
-                    <div class="w3-center w3-opacity">
-                        <small>
-                            © {{ current_year }} {{ self.get_site.site_name }}. All
-                            rights reserved
-                            <br>
-                        </small>
+                    <div class="column is-6-mobile is-hidden-mobile">
+                        <br>
                     </div>
-
+                    <div class="column is-6-mobile">
+                        <h3 class="w3-margin-bottom">Quick Links</h3>
+                        {% for child in self.get_site.root_page.get_children %}
+                            {% if child.show_in_menus %}
+                                &triangleright;&nbsp;
+                                <a class="footer-link w3-border-bottom w3-border-dark-gray w3-hover-border-white trans-400">{{ child }}</a>
+                                <br>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <div class="column is-6-mobile">
+                        <h3 class="w3-margin-bottom">We're social</h3>
+                        {% if settings.home.Configuration.linkedin %}
+                            <a target="_blank" rel="noopener noreferrer nofollow"
+                               href="{{ settings.home.Configuration.linkedin }}"
+                               class="footer-link w3-border-bottom w3-border-dark-gray w3-hover-border-white trans-400">LinkedIn</a>
+                            <br>
+                        {% endif %}
+                        {% if settings.home.Configuration.facebook %}
+                            <a target="_blank" rel="noopener noreferrer nofollow"
+                               href="{{ settings.home.Configuration.facebook }}"
+                               class="footer-link w3-border-bottom w3-border-dark-gray w3-hover-border-white trans-400">Facebook</a>
+                            <br>
+                        {% endif %}
+                        {% if settings.home.Configuration.twitter %}
+                            <a target="_blank" rel="noopener noreferrer nofollow"
+                               href="{{ settings.home.Configuration.twitter }}"
+                               class="footer-link w3-border-bottom w3-border-dark-gray w3-hover-border-white trans-400">Twitter</a>
+                            <br>
+                        {% endif %}
+                        {% if settings.home.Configuration.instagram %}
+                            <a target="_blank" rel="noopener noreferrer nofollow"
+                               href="{{ settings.home.Configuration.instagram }}"
+                               class="footer-link w3-border-bottom w3-border-dark-gray w3-hover-border-white trans-400">Instagram</a>
+                            <br>
+                        {% endif %}
+                        <br>
+                        <br>
+                    </div>
                 </div>
+                <div class="w3-center w3-opacity">
+                    <small>
+                        © {{ current_year }} {{ self.get_site.site_name }}. All
+                        rights reserved
+                        <br>
+                    </small>
+                </div>
+
             </div>
         </footer>
     </v-app>
