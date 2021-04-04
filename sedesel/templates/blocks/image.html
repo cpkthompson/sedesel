@@ -1,0 +1,3 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+{% image self.image original as image %}
+<v-img src="{{ image.url }}" max-height="{{ self.dimensions }}"></v-img>
