@@ -1,5 +1,12 @@
-<div class="heavy-font {% if self.size == 'h2' %}w3-xxxlarge
+<div class="{{ self.outer_classes }}">
+    <div class="{{ self.inner_classes }}">
+        <div class="heavy-font {% if self.size == 'h2' %}w3-xxxlarge
                         {% elif self.size == 'h3' %}w3-xxlarge
                         {% elif self.size == 'h4' %}w3-xlarge{% endif %}">
-    {{ self.heading_text }}
+            {{ self.title }}
+        </div>
+        <div>
+            {{ self.subtitle }}
+        </div>
+    </div>
 </div>

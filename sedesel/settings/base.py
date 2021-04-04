@@ -66,6 +66,7 @@ INSTALLED_APPS = [
 
     'modelcluster',
     'taggit',
+    'wagtailstreamforms',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -215,7 +216,6 @@ if ENVIRONMENT != 'local':
     X_FRAME_OPTIONS = 'SAME_ORIGIN'
 
 USER_AGENTS_CACHE = None
-
 
 AWS_ACCESS_KEY_ID = config('AWS_ACCESS_KEY_ID', default='AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = config('AWS_SECRET_ACCESS_KEY', default='AWS_SECRET_ACCESS_KEY')

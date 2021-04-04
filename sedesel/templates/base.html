@@ -1,5 +1,5 @@
-{% load static wagtailuserbar wagtailcore_tags %}
-
+{% load static wagtailuserbar wagtailcore_tags wagtailsettings_tags wagtailimages_tags %}
+{% get_settings use_default_site=True %}
 <!DOCTYPE html>
 <html class="no-js" lang="en">
 <head>
@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="{% static 'css/w3.css' %}">
     <link rel="stylesheet" href="{% static 'css/bulma.min.css' %}">
     <link href="https://cdn.jsdelivr.net/npm/vuetify@2.3.7/dist/vuetify.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;900&display=swap"
           rel="stylesheet">
@@ -38,7 +40,7 @@
 
         div, body, v-app {
             font-family: "TTCommons-Regular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
-            font-size: 18px;
+            font-size: {{ settings.home.Configuration.font_size }};
         }
 
         h1, h2, h3, h4, h5, h6, strong, .heavy-font {
@@ -84,9 +86,14 @@
              aria-label="main navigation">
             <div class="navbar-brand">
                 <div class="navbar-item is-paddingless">
-
-                    <a class="w3-hover-white is-paddingless w3-text-black w3-large"
+                    <a class="is-paddingless w3-large"
                        href="/">
+                        {% if settings.home.Configuration.logo %}
+
+                            {% image settings.home.Configuration.logo original as logo %}
+                            <img src="{{ logo.url }}" style="width: 70px">
+                            &nbsp;
+                        {% endif %}
                         <span class="w3-hide-small menu-label has-text-weight-bold is-marginless w3-text-black">{{ self.get_site.site_name }}</span>
                         <span class="w3-hide-large w3-hide-medium w3-small menu-label has-text-weight-bold is-marginless w3-text-black">{{ self.get_site.site_name }}</span>
                         &nbsp;
@@ -103,22 +110,38 @@
             </div>
 
             <div id="navbarBasicExample" class="navbar-menu w3-round-xxlarge">
-                <div class="navbar-end w3-white w3-round-xxlarge">
+                <div class="navbar-end w3-round-xxlarge">
                     <div class="navbar-item w3-center">
-                        <v-btn :depressed="false" :ripple="false" rounded text href="/"
-                               class="has-text-weight-bold w3-border-black w3-center ">
-                            <span class="w3-border-bottom w3-border-black">
-                                Home
-                            </span>
-                        </v-btn>
+                        {% if self.get_site.root_page.show_in_menus %}
+                            <v-btn :depressed="false" :ripple="false" rounded text
+                                   href="{% pageurl self.get_site.root_page %}"
+                                   class="has-text-weight-bold w3-border-black w3-center ">
+                                self.get_site.root_page
+                            </v-btn>
+                        {% endif %}
                         {% for child in self.get_site.root_page.get_children %}
                             {% if child.show_in_menus %}
-                                <v-btn :depressed="false" :ripple="false" rounded text href="{% pageurl child %}"
-                                       class="has-text-weight-bold w3-border-black w3-center ">
-                                    <span class="w3-border-bottom w3-border-black">
-                                        {{ child.title }}
-                                    </span>
-                                </v-btn>
+                                <v-menu open-on-hover offset-y :rounded="0">
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-btn v-bind="attrs" v-on="on" :depressed="false" :ripple="false" rounded text
+                                               href="{% pageurl child %}"
+                                               class="has-text-weight-bold w3-center">
+                                            {{ child.title }}
+                                            {% if child.get_children %}
+                                                <v-icon style="margin-top: -5px">arrow_drop_down</v-icon>
+                                            {% endif %}
+                                        </v-btn>
+                                    </template>
+                                    {% if child.get_children %}
+                                        <v-list>
+                                            {% for grand_child in child.get_children %}
+                                                <v-list-item href="{% pageurl grand_child %}">
+                                                    <v-list-item-title>{{ grand_child.title }}</v-list-item-title>
+                                                </v-list-item>
+                                            {% endfor %}
+                                        </v-list>
+                                    {% endif %}
+                                </v-menu>
                                 &nbsp;
                             {% endif %}
 
@@ -133,28 +156,78 @@
 
             {% endblock %}
         </div>
-        <footer class="hero is-small w3-topbar w3-border-pink">
-            <div class="hero-body w3-content w3-padding-64">
-                <h1 class="w3-xxlarge w3-center">{{ self.get_site.site_name }}</h1>
-                <h3 class="w3-center has-text-weight-light light-font">
-                    Adenta, Frafrahaha
-                    <br>
-                    Accra, Ghana
-                </h3>
-                <div class="w3-center w3-margin-top">
 
-                    <a href="" class="light-font w3-large w3-border-bottom">Privacy Policy</a>
-                    &nbsp;&bull;&nbsp;
-                    <a href="" class="light-font w3-large w3-border-bottom">Sitemap</a>
+        <footer class="hero">
+            <div class="hero-body">
+                <div class="container w3-content">
+                    <div class="columns is-multiline is-mobile">
+                        <div class="column is-6-mobile">
+                            <img src="{{ logo.url }}" style="width: 100px" class="w3-margin-bottom">
+                            &nbsp;
+                            <h1 class="w3-xlarge w3-margin-bottom">
+                                {{ self.get_site.site_name }}
+                            </h1>
+                            <div>
+                                {{ settings.home.Configuration.address_1 }}
+                                <br>
+                                {% if settings.home.Configuration.address_2 %}
+                                    {{ settings.home.Configuration.address_2 }}
+                                    <br>
+                                {% endif %}
+                                {{ settings.home.Configuration.city }}, {{ settings.home.Configuration.country }}
+                            </div>
+                        </div>
+                        <div class="column is-6-mobile">
+                            <br>
+                        </div>
+                        <div class="column is-6-mobile">
+                            {% for child in self.get_site.root_page.get_children %}
+                                {% if child.show_in_menus %}
+                                    <a class="footer-link w3-border-bottom w3-border-dark-gray w3-hover-border-white trans-400">{{ child }}</a>
+                                    <br>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        <div class="column is-6-mobile">
+                            {% if settings.home.Configuration.linkedin %}
+                                <a target="_blank" rel="noopener noreferrer nofollow"
+                                   href="{{ settings.home.Configuration.linkedin }}"
+                                   class="footer-link w3-border-bottom w3-border-dark-gray w3-hover-border-white trans-400">LinkedIn</a>
+                                <br>
+                            {% endif %}
+                            {% if settings.home.Configuration.facebook %}
+                                <a target="_blank" rel="noopener noreferrer nofollow"
+                                   href="{{ settings.home.Configuration.facebook }}"
+                                   class="footer-link w3-border-bottom w3-border-dark-gray w3-hover-border-white trans-400">Facebook</a>
+                                <br>
+                            {% endif %}
+                            {% if settings.home.Configuration.twitter %}
+                                <a target="_blank" rel="noopener noreferrer nofollow"
+                                   href="{{ settings.home.Configuration.twitter }}"
+                                   class="footer-link w3-border-bottom w3-border-dark-gray w3-hover-border-white trans-400">Twitter</a>
+                                <br>
+                            {% endif %}
+                            {% if settings.home.Configuration.instagram %}
+                                <a target="_blank" rel="noopener noreferrer nofollow"
+                                   href="{{ settings.home.Configuration.instagram }}"
+                                   class="footer-link w3-border-bottom w3-border-dark-gray w3-hover-border-white trans-400">Instagram</a>
+                                <br>
+                            {% endif %}
+                            <br>
+                            <br>
+                        </div>
+                    </div>
                     <br>
-                    <br>
-                    <span class="light-font"> © {{ current_year }} {{ self.get_site.site_name }}. All rights
-                        reserved</span>
+                    <div class="w3-center w3-opacity">
+                        <small>
+                            © {{ current_year }} {{ self.get_site.site_name }}. All
+                            rights reserved
+                            <br>
+                        </small>
+                    </div>
+
                 </div>
-
-                <br>
             </div>
-
         </footer>
     </v-app>
 </div>

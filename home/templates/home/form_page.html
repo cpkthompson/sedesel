@@ -5,7 +5,10 @@
         <div class="column is-6 is-offset-3">
             <form action="{% pageurl page %}" method="POST" role="form">
                 {% csrf_token %}
-                {{ form|bulma }}
+                {% for field in form %}
+                    {{ field }}
+                    {{ field|bulma }}
+                {% endfor %}
                 <v-btn type="submit" rounded dark>
                     {{ page.submit_cta }}
                 </v-btn>

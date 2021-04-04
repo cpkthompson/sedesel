@@ -1,9 +1,7 @@
 {% load wagtailcore_tags wagtailimages_tags %}
-<v-card {% if self.page %}href="{% pageurl self.page %}"{% endif %}>
-    {% image self.image fill-480x480 as image %}
+<v-card {% if self.page %}href="{% pageurl self.page %}"{% endif %} {% if self.is_flat %}flat{% endif %} tile>
     {% if self.image %}
-        <v-img class="white--text align-end" height="200px" src="{{ image.url }}">
-        </v-img>
+        {% include_block self.image %}
     {% endif %}
     {% if self.title %}
         <v-card-title>
