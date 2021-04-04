@@ -70,13 +70,13 @@ class CardBlock(StructBlock):
 
 
 class IntroducerBlock(StructBlock):
-    image = ImageChooserBlock(required=False)
+    image = ImageBlock()
     image_position = ChoiceBlock(default='left', choices=[
         ('left', 'Left'),
         ('right', 'Right'),
     ], blank=True, required=True)
     title = CharBlock(required=True)
-    text = TextBlock(required=False, max_length=450)
+    text = TextBlock(required=False)
     buttons = ListBlock(ButtonBlock)
 
     class Meta:
