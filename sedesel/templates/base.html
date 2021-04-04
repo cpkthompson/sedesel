@@ -100,13 +100,15 @@
                     </a>
                 </div>
                 &nbsp;
-                <a role="button" class="navbar-burger burger w3-round-large" aria-label="menu"
-                   aria-expanded="false"
-                   data-target="navbarBasicExample">
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                </a>
+                {% if self.get_site.root_page.show_in_menus or self.get_site.root_page.get_children %}
+                    <a role="button" class="navbar-burger burger w3-round-large" aria-label="menu"
+                       aria-expanded="false"
+                       data-target="navbarBasicExample">
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                        <span aria-hidden="true"></span>
+                    </a>
+                {% endif %}
             </div>
 
             <div id="navbarBasicExample" class="navbar-menu w3-round-xxlarge">
