@@ -116,7 +116,7 @@
                         {% if self.get_site.root_page.show_in_menus %}
                             <v-btn :depressed="false" :ripple="false" rounded text
                                    href="{% pageurl self.get_site.root_page %}"
-                                   class="has-text-weight-bold w3-border-black w3-center ">
+                                   class="has-text-weight-bold w3-center">
                                 {{ self.get_site.root_page.title }}
                             </v-btn>
                         {% endif %}
@@ -137,7 +137,8 @@
                                         <v-list>
                                             {% for grand_child in child.get_children %}
                                                 <v-list-item href="{% pageurl grand_child %}">
-                                                    <v-list-item-title>{{ grand_child.title }}</v-list-item-title>
+                                                    <v-list-item-title
+                                                            class="w3-center is-uppercase">{{ grand_child.title }}</v-list-item-title>
                                                 </v-list-item>
                                             {% endfor %}
                                         </v-list>
