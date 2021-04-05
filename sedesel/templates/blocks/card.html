@@ -4,16 +4,18 @@
     {% if self.image %}
         {% include_block self.image %}
     {% endif %}
-    {% if self.title %}
-        <h3 class="{{ self.classes.inner }}">{{ self.title }}</h3>
-    {% endif %}
-    {% if self.paragraph %}
-        {% include_block self.paragraph %}
-    {% endif %}
+    <div class="{{ self.classes.outer }}">
+        {% if self.title %}
+            <h3 class="{{ self.classes.inner }}">{{ self.title }}</h3>
+        {% endif %}
+        {% if self.paragraph %}
+            {% include_block self.paragraph %}
+        {% endif %}
 
-    {% if self.buttons %}
-        {% for button in self.buttons %}
-            {% include_block button %}
-        {% endfor %}
-    {% endif %}
+        {% if self.buttons %}
+            {% for button in self.buttons %}
+                {% include_block button %}
+            {% endfor %}
+        {% endif %}
+    </div>
 </v-card>
