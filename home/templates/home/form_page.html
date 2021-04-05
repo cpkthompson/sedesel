@@ -1,12 +1,22 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags wagtailimages_tags bulma_tags %}
+{% load wagtailcore_tags wagtailimages_tags bulma_tags sedesel_tags %}
 {% block content %}
     <section class="columns w3-padding-32 w3-container">
         <div class="column is-6 is-offset-3">
             <form action="{% pageurl page %}" method="POST" role="form">
                 {% csrf_token %}
-                {% for field in form %}
-                    {{ field|bulma }}
+                {% for field in form.visible_fields|group_fields:page.groupings %}
+                    {% if not field|is_list %}
+                        {{ field|bulma_horizontal }}
+                    {% else %}
+                        <div class="field is-horizontal">
+                            <div class="field-body">
+                                {% for subfield in field %}
+                                    {{ subfield|bulma_horizontal }}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
                 {% endfor %}
                 <v-btn type="submit" rounded dark>
                     {{ page.submit_cta }}

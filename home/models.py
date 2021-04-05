@@ -133,7 +133,6 @@ class CarouselBlock(StructBlock):
         template = "blocks/carousel.html"
 
 
-
 class HalfTitleTextBlock(StructBlock):
     heading = HeadingBlock()
     paragraph = ParagraphBlock()
@@ -168,10 +167,11 @@ class StandardPage(Page):
 class FormPage(AbstractEmailForm):
     submit_cta = models.CharField(max_length=140, help_text='Example: Submit, Save, Go!')
     thank_you_text = RichTextField(blank=True)
-
+    groupings = models.CharField(max_length=50, blank=True)
     content_panels = AbstractEmailForm.content_panels + [
         InlinePanel('form_fields', label="Form fields"),
         FieldPanel('submit_cta'),
+        FieldPanel('groupings'),
         FieldPanel('thank_you_text', classname="full"),
         MultiFieldPanel([
             FieldRowPanel([
