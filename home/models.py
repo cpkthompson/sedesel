@@ -65,7 +65,7 @@ class ImageBlock(StructBlock):
 
 class ParagraphBlock(StructBlock):
     classes = ClassBlock()
-    text = TextBlock()
+    text = TextBlock(required=False)
 
     class Meta:
         template = "blocks/paragraph.html"
@@ -75,7 +75,7 @@ class CardBlock(StructBlock):
     classes = ClassBlock()
     image = ImageBlock()
     title = CharBlock(required=True)
-    paragraph = ParagraphBlock(required=False)
+    paragraph = ParagraphBlock()
     page = PageChooserBlock(required=False)
     buttons = ListBlock(ButtonBlock)
     is_flat = BooleanBlock(required=False)
