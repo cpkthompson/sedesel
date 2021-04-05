@@ -44,8 +44,10 @@ class PaddingBlock(StructBlock):
 
 
 class ButtonBlock(StructBlock):
+    classes = ClassBlock()
     text = CharBlock(required=True)
     page = PageChooserBlock(required=True)
+    attrs = CharBlock(default='large rounded')
 
     class Meta:
         template = "blocks/button.html"

@@ -1,4 +1,6 @@
 {% load wagtailcore_tags %}
-<v-btn large rounded href="{% pageurl button.page %}" class="ma-2">
-    {{ button.text }}
-</v-btn>
+<div class="{{ self.classes.outer }}">
+    <v-btn {{ self.attrs }} href="{% pageurl self.page %}" class="{{ self.classes.inner }}">
+        {{ self.text }}
+    </v-btn>
+</div>
