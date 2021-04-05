@@ -138,7 +138,7 @@
                                             {% for grand_child in child.get_children %}
                                                 <v-list-item href="{% pageurl grand_child %}">
                                                     <v-list-item-title
-                                                            class="w3-center is-uppercase">{{ grand_child.title }}</v-list-item-title>
+                                                            class="w3-left-align is-uppercase">{{ grand_child.title }}</v-list-item-title>
                                                 </v-list-item>
                                             {% endfor %}
                                         </v-list>
@@ -153,6 +153,16 @@
                 </div>
             </div>
         </nav>
+        {% if page.get_children and False %}
+            <div class="w3-padding w3-border-top w3-center"
+                 style="overflow-y: auto;white-space: nowrap;border-color: lightgray!important;">
+                <v-spacer></v-spacer>
+                {% for child in page.get_children %}
+                    <v-btn text rounded class="trans-400 w3-large" href="{% pageurl child %}">{{ child.title }}</v-btn>
+                {% endfor %}
+                <v-spacer></v-spacer>
+            </div>
+        {% endif %}
         <div style="min-height: 90vh" class="w3-light-grey">
             {% block content %}
 
