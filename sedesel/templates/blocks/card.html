@@ -5,23 +5,15 @@
         {% include_block self.image %}
     {% endif %}
     {% if self.title %}
-        <v-card-title>
-            <h3 class="{{ self.classes.inner }}">{{ self.title }}</h3>
-        </v-card-title>
+        <h3 class="{{ self.classes.inner }}">{{ self.title }}</h3>
     {% endif %}
-    {% if self.text %}
-        <v-card-text>
-            <p class="{{ self.classes.inner }}">
-                {{ self.text }}
-            </p>
-        </v-card-text>
+    {% if self.paragraph %}
+        {% include_block self.paragraph %}
     {% endif %}
 
     {% if self.buttons %}
-        <v-card-actions>
-            {% for button in self.buttons %}
-                {% include_block button %}
-            {% endfor %}
-        </v-card-actions>
+        {% for button in self.buttons %}
+            {% include_block button %}
+        {% endfor %}
     {% endif %}
 </v-card>

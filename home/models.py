@@ -63,11 +63,19 @@ class ImageBlock(StructBlock):
         template = "blocks/image.html"
 
 
+class ParagraphBlock(StructBlock):
+    classes = ClassBlock()
+    text = TextBlock()
+
+    class Meta:
+        template = "blocks/paragraph.html"
+
+
 class CardBlock(StructBlock):
     classes = ClassBlock()
     image = ImageBlock()
     title = CharBlock(required=True)
-    text = TextBlock(required=False, max_length=450)
+    paragraph = ParagraphBlock()
     page = PageChooserBlock(required=False)
     buttons = ListBlock(ButtonBlock)
     is_flat = BooleanBlock(required=False)
@@ -125,13 +133,6 @@ class CarouselBlock(StructBlock):
     class Meta:
         template = "blocks/carousel.html"
 
-
-class ParagraphBlock(StructBlock):
-    classes = ClassBlock()
-    text = TextBlock()
-
-    class Meta:
-        template = "blocks/paragraph.html"
 
 
 class HalfTitleTextBlock(StructBlock):
