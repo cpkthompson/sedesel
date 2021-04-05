@@ -5,7 +5,7 @@
     {% image self.image original as image %}
     <v-img src="{{ image.url }}" height="{{ self.height }}">
         <div class="{% if self.image %}bgoverlay w3-text-white{% else %}w3-text-black{% endif %} w3-display-container"
-             style="height: 700px">
+             style="height: {{ self.height }}">
             <div class="{{ self.container_alignment }} w3-padding-16">
                 <h1 class="w3-xxxlarge has-text-weight-bold {{ self.text_alignment }}">{{ self.title }}</h1>
                 {% if self.subtitle %}
