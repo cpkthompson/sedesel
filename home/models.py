@@ -5,8 +5,8 @@ from wagtail.contrib.forms.models import AbstractFormField, AbstractEmailForm
 from wagtail.contrib.settings.models import BaseSetting
 from wagtail.contrib.settings.registry import register_setting
 from wagtail.core.blocks import (
-    CharBlock, ChoiceBlock, StreamBlock, StructBlock, TextBlock, ListBlock, PageChooserBlock, RichTextBlock,
-    BooleanBlock, IntegerBlock, )
+    CharBlock, ChoiceBlock, StreamBlock, StructBlock, TextBlock, ListBlock, PageChooserBlock, BooleanBlock,
+    IntegerBlock, )
 from wagtail.core.fields import StreamField, RichTextField
 from wagtail.core.models import Page
 from wagtail.embeds.blocks import EmbedBlock
@@ -127,7 +127,7 @@ class CarouselBlock(StructBlock):
 
 
 class ParagraphBlock(StructBlock):
-    text = RichTextBlock()
+    text = TextBlock()
 
     class Meta:
         template = "blocks/paragraph.html"
