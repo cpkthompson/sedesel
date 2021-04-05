@@ -94,6 +94,7 @@ class HeroBlock(StructBlock):
     image = ImageChooserBlock(required=False)
     title = CharBlock(required=True)
     subtitle = TextBlock(required=False)
+    height = CharBlock(required=True, default='700px')
     container_alignment = ChoiceBlock(default='w3-display-middle', choices=[
         ('w3-display-middle', 'Center'),
         ('w3-display-left container', 'Left'),
