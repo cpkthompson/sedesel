@@ -75,7 +75,7 @@ class CardBlock(StructBlock):
     classes = ClassBlock()
     image = ImageBlock()
     title = CharBlock(required=True)
-    paragraph = ParagraphBlock()
+    paragraph = ParagraphBlock(required=False)
     page = PageChooserBlock(required=False)
     buttons = ListBlock(ButtonBlock)
     is_flat = BooleanBlock(required=False)
