@@ -17,8 +17,8 @@ from wagtailstreamforms.blocks import WagtailFormBlock
 
 
 class ClassBlock(StructBlock):
-    inner = CharBlock(required=False)
     outer = CharBlock(required=False)
+    inner = CharBlock(required=False)
 
 
 class HeadingBlock(StructBlock):
