@@ -1,6 +1,5 @@
 {% load wagtailcore_tags wagtailimages_tags %}
-<v-card class="{{ self.classes.outer }}" {% if self.page %}href="{% pageurl self.page %}"{% endif %}
-        {% if self.is_flat %}flat{% endif %} tile>
+<v-card {% if self.page %}href="{% pageurl self.page %}"{% endif %} {{ self.attrs }}>
     {% if self.image %}
         {% include_block self.image %}
     {% endif %}

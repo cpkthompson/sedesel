@@ -5,8 +5,7 @@ from wagtail.contrib.forms.models import AbstractFormField, AbstractEmailForm
 from wagtail.contrib.settings.models import BaseSetting
 from wagtail.contrib.settings.registry import register_setting
 from wagtail.core.blocks import (
-    CharBlock, ChoiceBlock, StreamBlock, StructBlock, TextBlock, ListBlock, PageChooserBlock, BooleanBlock,
-    IntegerBlock, )
+    CharBlock, ChoiceBlock, StreamBlock, StructBlock, TextBlock, ListBlock, PageChooserBlock, IntegerBlock, )
 from wagtail.core.fields import StreamField, RichTextField
 from wagtail.core.models import Page
 from wagtail.embeds.blocks import EmbedBlock
@@ -78,7 +77,7 @@ class CardBlock(StructBlock):
     paragraph = ParagraphBlock()
     page = PageChooserBlock(required=False)
     buttons = ListBlock(ButtonBlock)
-    is_flat = BooleanBlock(required=False)
+    attrs = CharBlock(default='tile flat')
 
     class Meta:
         template = "blocks/card.html"
