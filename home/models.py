@@ -62,6 +62,7 @@ class ImageBlock(StructBlock):
 
 
 class CardBlock(StructBlock):
+    classes = ClassBlock()
     image = ImageBlock()
     title = CharBlock(required=True)
     text = TextBlock(required=False, max_length=450)
@@ -108,7 +109,7 @@ class HeroBlock(StructBlock):
 
 
 class GridOfCardsBlock(StructBlock):
-    container_class = CharBlock()
+    classes = ClassBlock()
     cards = ListBlock(CardBlock)
 
     class Meta:

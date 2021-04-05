@@ -2,9 +2,9 @@
 {% load static wagtailuserbar wagtailcore_tags %}
 
 <section>
-    <div class="columns is-multiline is-centered">
+    <div class="columns is-multiline {{ self.classes.outer }}">
         {% for card in self.cards %}
-            <div class="column {{ self.container_class }}">
+            <div class="column {{ self.classes.inner }}">
                 {% include_block card %}
             </div>
         {% endfor %}

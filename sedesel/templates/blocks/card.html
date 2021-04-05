@@ -1,15 +1,16 @@
 {% load wagtailcore_tags wagtailimages_tags %}
-<v-card {% if self.page %}href="{% pageurl self.page %}"{% endif %} {% if self.is_flat %}flat{% endif %} tile>
+<v-card class="{{ self.classes.outer }}" {% if self.page %}href="{% pageurl self.page %}"{% endif %}
+        {% if self.is_flat %}flat{% endif %} tile>
     {% if self.image %}
         {% include_block self.image %}
     {% endif %}
     {% if self.title %}
-        <v-card-title>
+        <v-card-title class="{{ self.classes.inner }}">
             <h3>{{ self.title }}</h3>
         </v-card-title>
     {% endif %}
     {% if self.text %}
-        <v-card-text class="text--primary">
+        <v-card-text class="{{ self.classes.inner }}">
             {{ self.text }}
         </v-card-text>
     {% endif %}
