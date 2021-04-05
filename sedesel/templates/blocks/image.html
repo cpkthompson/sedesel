@@ -2,5 +2,5 @@
 {% image self.image original as image %}
 <v-img src="{{ image.url }}" max-height="{{ self.dimensions }}" alt="{{ self.attribution }}"></v-img>
 {% if self.caption %}
-    <h3>{{ self.caption }}</h3>
+    <h3 class="w3-padding-large">{{ self.caption }}</h3>
 {% endif %}
