@@ -196,7 +196,8 @@
                         {% for child in self.get_site.root_page.get_children %}
                             {% if child.show_in_menus %}
                                 &triangleright;&nbsp;
-                                <a class="footer-link w3-border-bottom w3-border-dark-gray w3-hover-border-white trans-400">{{ child }}</a>
+                                <a href="{% pageurl child %}"
+                                   class="footer-link w3-border-bottom w3-border-dark-gray w3-hover-border-white trans-400">{{ child }}</a>
                                 <br>
                             {% endif %}
                         {% endfor %}
