@@ -127,6 +127,7 @@ class CarouselBlock(StructBlock):
 
 
 class ParagraphBlock(StructBlock):
+    classes = ClassBlock()
     text = TextBlock()
 
     class Meta:
