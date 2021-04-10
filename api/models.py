@@ -170,10 +170,12 @@ class FormPage(AbstractEmailForm):
     submit_cta = models.CharField(max_length=140, help_text='Example: Submit, Save, Go!')
     thank_you_text = RichTextField(blank=True)
     groupings = models.CharField(max_length=50, blank=True)
+    pre_stream_body = StreamField(StandardStreamBlock(), blank=True, null=True)
     classes_outer = models.CharField(max_length=200, blank=True)
     classes_inner = models.CharField(max_length=200, blank=True)
     content_panels = AbstractEmailForm.content_panels + [
         MultiFieldPanel([
+            StreamFieldPanel('pre_stream_body'),
             FieldPanel('groupings'),
             FieldPanel('classes_outer'),
             FieldPanel('classes_inner'),
