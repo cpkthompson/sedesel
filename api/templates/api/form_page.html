@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load wagtailcore_tags wagtailimages_tags bulma_tags sedesel_tags %}
 {% block content %}
+    {{ page.pre_stream_body }}
     <section class="columns {{ page.classes_outer }}">
         <div class="column {{ page.classes_inner }}">
             <form action="{% pageurl page %}" method="POST" role="form">
