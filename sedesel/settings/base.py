@@ -47,7 +47,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [
     s.strip() for s in v.split(',')], default='*')
 
 INSTALLED_APPS = [
-    'home',
+    'api',
     'accounts',
     'search',
 

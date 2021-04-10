@@ -189,6 +189,23 @@ class FormField(AbstractFormField):
     page = ParentalKey('FormPage', related_name='form_fields', on_delete=models.CASCADE)
 
 
+class PeoplePage(Page):
+    pre_stream_body = StreamField(StandardStreamBlock(), blank=True, null=True)
+    people_collection = models.ForeignKey(PeopleCollection, null=True, blank=False, on_delete=models.SET_NULL)
+    post_stream_body = StreamField(StandardStreamBlock(), blank=True, null=True)
+    classes_outer = models.CharField(max_length=200, blank=True)
+    classes_inner = models.CharField(max_length=200, blank=True)
+    content_panels = Page.content_panels + [
+        StreamFieldPanel('pre_stream_body'),
+        MultiFieldPanel([
+            FieldPanel('people_collection', classname="full"),
+            FieldPanel('classes_outer'),
+            FieldPanel('classes_inner'),
+        ], 'People'),
+        StreamFieldPanel('post_stream_body'),
+    ]
+
+
 @register_snippet
 class Favicon(models.Model):
     image = models.ForeignKey(
@@ -246,27 +263,10 @@ class Configuration(BaseSetting):
         ], 'Basic settings'),
     ]
 
-    # home - standard
+    # api - standard
     # about us  - standard page - include team
     # books  - standard page
     # authors  - standard page
     # events/announcements  - standard page
     # blog  - listing page
     # contact us - form page
-
-
-class PeoplePage(Page):
-    pre_stream_body = StreamField(StandardStreamBlock(), blank=True, null=True)
-    people_collection = models.ForeignKey(PeopleCollection, null=True, blank=False, on_delete=models.SET_NULL)
-    post_stream_body = StreamField(StandardStreamBlock(), blank=True, null=True)
-    classes_outer = models.CharField(max_length=200, blank=True)
-    classes_inner = models.CharField(max_length=200, blank=True)
-    content_panels = Page.content_panels + [
-        StreamFieldPanel('pre_stream_body'),
-        MultiFieldPanel([
-            FieldPanel('people_collection', classname="full"),
-            FieldPanel('classes_outer', classname="full"),
-            FieldPanel('classes_inner', classname="full"),
-        ], 'People'),
-        StreamFieldPanel('post_stream_body'),
-    ]
