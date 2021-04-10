@@ -14,6 +14,8 @@ from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.snippets.models import register_snippet
 from wagtailstreamforms.blocks import WagtailFormBlock
 
+from accounts.models import PeopleCollection
+
 
 class ClassBlock(StructBlock):
     outer = CharBlock(required=False)
@@ -258,3 +260,20 @@ class Configuration(BaseSetting):
     # events/announcements  - standard page
     # blog  - listing page
     # contact us - form page
+
+
+class PeoplePage(Page):
+    pre_stream_body = StreamField(StandardStreamBlock(), blank=True, null=True)
+    people_collection = models.ForeignKey(PeopleCollection, null=True, blank=False, on_delete=models.SET_NULL)
+    post_stream_body = StreamField(StandardStreamBlock(), blank=True, null=True)
+    classes_outer = models.CharField(max_length=200, blank=True)
+    classes_inner = models.CharField(max_length=200, blank=True)
+    content_panels = Page.content_panels + [
+        StreamFieldPanel('pre_stream_body'),
+        MultiFieldPanel([
+            FieldPanel('people_collection', classname="full"),
+            FieldPanel('classes_outer', classname="full"),
+            FieldPanel('classes_inner', classname="full"),
+        ], 'People'),
+        StreamFieldPanel('post_stream_body'),
+    ]

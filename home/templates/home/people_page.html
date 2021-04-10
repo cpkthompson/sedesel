@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static wagtailimages_tags wagtailcore_tags %}
+{% block content %}
+    {{ page.pre_stream_body }}
+    <div class="columns is-multiline {{ page.classes_outer }}">
+        {% for person in page.people_collection.people_set.all %}
+            {% image person.photo fill-540x680 as photo %}
+            <div class="column {{ page.classes_inner }}">
+                <div class="card-image">
+                    <figure class="image w3-margin">
+                        <v-img src="{{ photo.url }}" alt="{{ person.get_full_name }}" lazy-src="{{ photo.url }}"
+                               class="grey lighten-2">
+                            <v-layout
+                                    slot="placeholder"
+                                    fill-height
+                                    align-center
+                                    justify-center
+                                    ma-0>
+                                <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                            </v-layout>
+                        </v-img>
+                    </figure>
+                </div>
+                <h1 class="w3-padding w3-center"
+                    style="margin-top: 10px">{{ person.get_full_name }}</h1>
+
+                <v-layout row justify-center>
+                    <v-dialog width="1000px">
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn v-bind="attrs" v-on="on" dark rounded>View Profile</v-btn>
+                        </template>
+                        <v-card height="600px" style="overflow-y: hidden" class="pha-deep-blue">
+                            <v-layout>
+                                <v-flex xs0 sm5 md5 lg5>
+                                    {% image person.photo fill-400x600 as photo %}
+                                    <v-img
+                                            src="{{ photo.url }}" alt="{{ person.get_full_name }}"
+                                            lazy-src="{{ photo.url }}"
+                                            class="grey lighten-2">
+                                        <v-layout
+                                                slot="placeholder"
+                                                fill-height
+                                                align-center
+                                                justify-center
+                                                ma-0>
+                                            <v-progress-circular indeterminate
+                                                                 color="grey lighten-5"></v-progress-circular>
+                                        </v-layout>
+                                    </v-img>
+                                </v-flex>
+                                <v-flex xs12 sm7 md7 lg7 class="w3-padding w3-padding-32">
+                                    <v-card-title primary-title>
+                                        <div>
+                                            <h3 class="is-bold w3-xxlarge">{{ person.get_full_name }}</h3>
+                                            {% if person.job_title %}
+                                                <h4 class="is-bold w3-xlarge">{{ person.headline }}</h4>
+                                            {% endif %}
+                                        </div>
+                                    </v-card-title>
+                                    <v-card-text style="height: 460px;overflow-y: auto">
+                                        <p class="w3-large">
+                                            {{ person.bio|linebreaksbr }}
+                                        </p>
+                                        <br>
+                                    </v-card-text>
+                                </v-flex>
+                            </v-layout>
+                        </v-card>
+                    </v-dialog>
+                </v-layout>
+            </div>
+        {% endfor %}
+    </div>
+    {{ page.post_stream_body }}
+{% endblock %}

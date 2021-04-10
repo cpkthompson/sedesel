@@ -48,6 +48,7 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [
 
 INSTALLED_APPS = [
     'home',
+    'accounts',
     'search',
 
     'wagtail.contrib.forms',

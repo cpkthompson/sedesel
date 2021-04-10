@@ -5,8 +5,7 @@ register = template.Library()
 
 @register.filter(name='group_fields')
 def group_fields(fields, groups):
-    grouped_fields_dict = {
-    }
+    grouped_fields_dict = {}
     results = []
     for count, field in enumerate(fields):
         worked_field = False
