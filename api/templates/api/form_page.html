@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% load wagtailcore_tags wagtailimages_tags bulma_tags sedesel_tags %}
 {% block content %}
-    <section class="columns w3-padding-32 w3-container">
-        <div class="column is-6 is-offset-3">
+    <section class="columns {{ page.classes_outer }}">
+        <div class="column {{ page.classes_inner }}">
             <form action="{% pageurl page %}" method="POST" role="form">
                 {% csrf_token %}
                 {% for field in form.visible_fields|group_fields:page.groupings %}
@@ -24,4 +24,4 @@
             </form>
         </div>
     </section>
-{% endblock content %}
+{% endblock %}

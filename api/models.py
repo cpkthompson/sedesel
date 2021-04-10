@@ -170,10 +170,16 @@ class FormPage(AbstractEmailForm):
     submit_cta = models.CharField(max_length=140, help_text='Example: Submit, Save, Go!')
     thank_you_text = RichTextField(blank=True)
     groupings = models.CharField(max_length=50, blank=True)
+    classes_outer = models.CharField(max_length=200, blank=True)
+    classes_inner = models.CharField(max_length=200, blank=True)
     content_panels = AbstractEmailForm.content_panels + [
+        MultiFieldPanel([
+            FieldPanel('groupings'),
+            FieldPanel('classes_outer'),
+            FieldPanel('classes_inner'),
+        ], "Look and feel"),
         InlinePanel('form_fields', label="Form fields"),
         FieldPanel('submit_cta'),
-        FieldPanel('groupings'),
         FieldPanel('thank_you_text', classname="full"),
         MultiFieldPanel([
             FieldRowPanel([
