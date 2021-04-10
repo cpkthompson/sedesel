@@ -185,14 +185,7 @@ class FormPage(AbstractEmailForm):
     ]
 
 
-class MyFormField(AbstractFormField):
-    grouping = models.CharField(max_length=140, blank=True, null=True)
-    panels = AbstractFormField.panels + [
-        FieldPanel('grouping'),
-    ]
-
-
-class FormField(MyFormField):
+class FormField(AbstractFormField):
     page = ParentalKey('FormPage', related_name='form_fields', on_delete=models.CASCADE)
 
 
