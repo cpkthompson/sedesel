@@ -241,3 +241,5 @@ AWS_DEFAULT_ACL = "public-read"
 MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN,
                                 AWS_PUBLIC_MEDIA_LOCATION)
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+
+WAGTAIL_APPEND_SLASH = False
