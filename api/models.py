@@ -250,8 +250,9 @@ class Configuration(BaseSetting):
         on_delete=models.SET_NULL,
         related_name='+')
     favicons = models.ManyToManyField(Favicon, blank=True)
-    primary_color = models.CharField(max_length=15, blank=True)
-    secondary_color = models.CharField(max_length=15, blank=True)
+    primary_color_hex = models.CharField(max_length=15, blank=True)
+    secondary_color_hex = models.CharField(max_length=15, blank=True)
+    background_color_class = models.CharField(max_length=15, blank=True, default='w3-light-grey')
     font_size = models.CharField(max_length=15, blank=True, default=1, null=True)
 
     panels = [
@@ -269,10 +270,11 @@ class Configuration(BaseSetting):
             FieldPanel('country', classname='col6'),
         ], 'Address'),
         MultiFieldPanel([
-            ImageChooserPanel('logo', classname='col6'),
+            ImageChooserPanel('logo', ),
             FieldPanel('font_size', classname='col6'),
-            FieldPanel('primary_color', classname='col6'),
-            FieldPanel('secondary_color', classname='col6'),
+            FieldPanel('background_color_class', classname='col6'),
+            FieldPanel('primary_color_hex', classname='col6'),
+            FieldPanel('secondary_color_hex', classname='col6'),
         ], 'Basic settings'),
     ]
 

@@ -168,7 +168,7 @@
                 <v-spacer></v-spacer>
             </div>
         {% endif %}
-        <div style="min-height: 90vh" class="w3-light-grey">
+        <div style="min-height: 90vh" class="{{ settings.api.Configuration.background_color_class }}">
             {% block content %}
 
             {% endblock %}
@@ -208,7 +208,9 @@
                         {% endfor %}
                     </div>
                     <div class="column is-6-mobile">
-                        <h3 class="w3-margin-bottom">We're social</h3>
+                        {% if settings.api.Configuration.social_heading %}
+                            <h3 class="w3-margin-bottom">{{ settings.api.Configuration.social_heading }}</h3>
+                        {% endif %}
                         {% if settings.api.Configuration.linkedin %}
                             <a target="_blank" rel="noopener noreferrer nofollow"
                                href="{{ settings.api.Configuration.linkedin }}"
