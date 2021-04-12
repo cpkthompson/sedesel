@@ -68,7 +68,6 @@ INSTALLED_APPS = [
 
     'modelcluster',
     'taggit',
-    'wagtailstreamforms',
 
     'django.contrib.admin',
     'django.contrib.auth',

@@ -15,7 +15,6 @@ from wagtail.images.blocks import ImageChooserBlock
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
-from wagtailstreamforms.blocks import WagtailFormBlock
 
 from accounts.models import PeopleCollection
 
@@ -156,7 +155,6 @@ class StandardStreamBlock(StreamBlock):
     paragraph = ParagraphBlock()
     embed = EmbedBlock()
     half_title_text = HalfTitleTextBlock()
-    form = WagtailFormBlock()
 
 
 class StandardPage(Page):
@@ -297,7 +295,7 @@ class PostCollection(index.Indexed, ClusterableModel):
 
 class PostsIndexPage(Page):
     pre_stream_body = StreamField(StandardStreamBlock(), blank=True, null=True)
-    posts_collection = models.ForeignKey(PostCollection, on_delete=models.CASCADE, null=True, blank=True)
+    posts_collection = models.ForeignKey(PostCollection, on_delete=models.SET_NULL, null=True, blank=True)
     post_stream_body = StreamField(StandardStreamBlock(), blank=True, null=True)
     content_panels = Page.content_panels + [
         StreamFieldPanel('pre_stream_body'),

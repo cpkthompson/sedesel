@@ -6,7 +6,6 @@ import wagtail.core.fields
 import wagtail.embeds.blocks
 import wagtail.images.blocks
 import wagtail.search.index
-import wagtailstreamforms.blocks
 from django.db import migrations, models
 
 import api.models
@@ -250,29 +249,15 @@ class Migration(migrations.Migration):
                                                                           ('paragraph', wagtail.core.blocks.StructBlock(
                                                                               [('classes',
                                                                                 wagtail.core.blocks.StructBlock([(
-                                                                                                                 'outer',
-                                                                                                                 wagtail.core.blocks.CharBlock(
-                                                                                                                     required=False)),
-                                                                                                                 (
-                                                                                                                 'inner',
-                                                                                                                 wagtail.core.blocks.CharBlock(
-                                                                                                                     required=False))])),
+                                                                                    'outer',
+                                                                                    wagtail.core.blocks.CharBlock(
+                                                                                        required=False)),
+                                                                                    (
+                                                                                        'inner',
+                                                                                        wagtail.core.blocks.CharBlock(
+                                                                                            required=False))])),
                                                                                ('text', wagtail.core.blocks.TextBlock(
-                                                                                   required=False))]))])), ('form',
-                                                                                                            wagtail.core.blocks.StructBlock(
-                                                                                                                [(
-                                                                                                                 'form',
-                                                                                                                 wagtailstreamforms.blocks.FormChooserBlock()),
-                                                                                                                 (
-                                                                                                                 'form_action',
-                                                                                                                 wagtail.core.blocks.CharBlock(
-                                                                                                                     help_text='The form post action. "" or "." for the current page or a url',
-                                                                                                                     required=False)),
-                                                                                                                 (
-                                                                                                                 'form_reference',
-                                                                                                                 wagtailstreamforms.blocks.InfoBlock(
-                                                                                                                     help_text='This form will be given a unique reference once saved',
-                                                                                                                     required=False))]))],
+                                                                                   required=False))]))])), ],
                                                                     blank=True, null=True)),
                 ('post_stream_body', wagtail.core.fields.StreamField([('carousel', wagtail.core.blocks.StructBlock(
                     [('carousel_items', wagtail.core.blocks.ListBlock(api.models.HeroBlock))])), ('hero',
@@ -484,28 +469,16 @@ class Migration(migrations.Migration):
                                                                                                             [('classes',
                                                                                                               wagtail.core.blocks.StructBlock(
                                                                                                                   [(
-                                                                                                                   'outer',
-                                                                                                                   wagtail.core.blocks.CharBlock(
-                                                                                                                       required=False)),
-                                                                                                                   (
-                                                                                                                   'inner',
-                                                                                                                   wagtail.core.blocks.CharBlock(
-                                                                                                                       required=False))])),
+                                                                                                                      'outer',
+                                                                                                                      wagtail.core.blocks.CharBlock(
+                                                                                                                          required=False)),
+                                                                                                                      (
+                                                                                                                          'inner',
+                                                                                                                          wagtail.core.blocks.CharBlock(
+                                                                                                                              required=False))])),
                                                                                                              ('text',
                                                                                                               wagtail.core.blocks.TextBlock(
-                                                                                                                  required=False))]))])),
-                                                                      ('form', wagtail.core.blocks.StructBlock([('form',
-                                                                                                                 wagtailstreamforms.blocks.FormChooserBlock()),
-                                                                                                                (
-                                                                                                                'form_action',
-                                                                                                                wagtail.core.blocks.CharBlock(
-                                                                                                                    help_text='The form post action. "" or "." for the current page or a url',
-                                                                                                                    required=False)),
-                                                                                                                (
-                                                                                                                'form_reference',
-                                                                                                                wagtailstreamforms.blocks.InfoBlock(
-                                                                                                                    help_text='This form will be given a unique reference once saved',
-                                                                                                                    required=False))]))],
+                                                                                                                  required=False))]))])), ],
                                                                      blank=True, null=True)),
                 ('posts_collection',
                  models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
