@@ -305,7 +305,7 @@ class PostsIndexPage(Page):
 
     def serve(self, request):
         context = super().serve(request).context_data
-        context.update({'page': {
+        context.update({
             'posts': [
                 {
                     'date': '7/24/19',
@@ -328,5 +328,5 @@ class PostsIndexPage(Page):
                     'brief': 'Just as sailors abide by the laws of the sea, desert inhabitants live by a code that keeps them safe in this often extreme environment. Lesson number one: Your water is everyone’s water.',
                 },
             ]
-        }})
+        })
         return render(request, "api/harman-demo.template.html", context)
