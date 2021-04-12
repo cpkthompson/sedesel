@@ -24,3 +24,13 @@ def group_fields(fields, groups):
 @register.filter(name='is_list')
 def is_list(args):
     return type(args) == list
+
+
+@register.filter(name='show_in_menus')
+def show_in_menus(children):
+    result = False
+    for child in children:
+        if child.show_in_menus:
+            result = True
+            break
+    return result

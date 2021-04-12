@@ -1,5 +1,7 @@
 from django.db import models
+from django.shortcuts import render
 from modelcluster.fields import ParentalKey
+from modelcluster.models import ClusterableModel
 from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel, InlinePanel, MultiFieldPanel, FieldRowPanel
 from wagtail.contrib.forms.models import AbstractFormField, AbstractEmailForm
 from wagtail.contrib.settings.models import BaseSetting
@@ -11,6 +13,7 @@ from wagtail.core.models import Page
 from wagtail.embeds.blocks import EmbedBlock
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 from wagtailstreamforms.blocks import WagtailFormBlock
 
@@ -234,6 +237,7 @@ class Configuration(BaseSetting):
     city = models.CharField(max_length=140, blank=True)
     country = models.CharField(max_length=140, blank=True)
 
+    social_heading = models.CharField(max_length=140, blank=True, default='We\'re social')
     linkedin = models.URLField(blank=True)
     facebook = models.URLField(blank=True)
     twitter = models.URLField(blank=True)
@@ -252,22 +256,23 @@ class Configuration(BaseSetting):
 
     panels = [
         MultiFieldPanel([
-            FieldPanel('linkedin'),
-            FieldPanel('facebook'),
-            FieldPanel('twitter'),
-            FieldPanel('instagram'),
+            FieldPanel('social_heading'),
+            FieldPanel('linkedin', classname='col6'),
+            FieldPanel('facebook', classname='col6'),
+            FieldPanel('twitter', classname='col6'),
+            FieldPanel('instagram', classname='col6'),
         ], 'Social Media'),
         MultiFieldPanel([
             FieldPanel('address_1'),
             FieldPanel('address_2'),
-            FieldPanel('city'),
-            FieldPanel('country'),
+            FieldPanel('city', classname='col6'),
+            FieldPanel('country', classname='col6'),
         ], 'Address'),
         MultiFieldPanel([
-            ImageChooserPanel('logo'),
-            FieldPanel('primary_color'),
-            FieldPanel('secondary_color'),
-            FieldPanel('font_size'),
+            ImageChooserPanel('logo', classname='col6'),
+            FieldPanel('font_size', classname='col6'),
+            FieldPanel('primary_color', classname='col6'),
+            FieldPanel('secondary_color', classname='col6'),
         ], 'Basic settings'),
     ]
 
@@ -278,3 +283,50 @@ class Configuration(BaseSetting):
     # events/announcements  - standard page
     # blog  - listing page
     # contact us - form page
+
+
+@register_snippet
+class PostCollection(index.Indexed, ClusterableModel):
+    title = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.title
+
+
+class PostsIndexPage(Page):
+    pre_stream_body = StreamField(StandardStreamBlock(), blank=True, null=True)
+    posts_collection = models.ForeignKey(PostCollection, on_delete=models.CASCADE, null=True, blank=True)
+    post_stream_body = StreamField(StandardStreamBlock(), blank=True, null=True)
+    content_panels = Page.content_panels + [
+        StreamFieldPanel('pre_stream_body'),
+        FieldPanel('posts_collection', classname="full"),
+        StreamFieldPanel('post_stream_body'),
+    ]
+
+    def serve(self, request):
+        context = super().serve(request).context_data
+        context.update({'page': {
+            'posts': [
+                {
+                    'date': '7/24/19',
+                    'title': 'Six Ways to (Legally) Work Anywhere',
+                    'brief': 'One of the most frequent questions I get is about how I’ve been able to pick up temporary work throughout my travels without falling afoul of the law. ',
+                },
+                {
+                    'date': '7/24/19',
+                    'title': 'Highlights from Mali',
+                    'brief': 'Frequent readers will know that Western Africa is one of my favorite parts of the world, so my expectations were already high when I secured a lift to Bamako.',
+                },
+                {
+                    'date': '7/24/19',
+                    'title': 'Highlights from Mali',
+                    'brief': 'Frequent readers will know that Western Africa is one of my favorite parts of the world, so my expectations were already high when I secured a lift to Bamako.',
+                },
+                {
+                    'date': '7/24/19',
+                    'title': 'Desert Etiquette',
+                    'brief': 'Just as sailors abide by the laws of the sea, desert inhabitants live by a code that keeps them safe in this often extreme environment. Lesson number one: Your water is everyone’s water.',
+                },
+            ]
+        }})
+        return render(request, "api/harman-demo.template.html", context)

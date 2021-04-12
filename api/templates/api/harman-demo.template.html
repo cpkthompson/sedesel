@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div style="min-height: 100vh" class="w3-white">
+        <div class="w3-padding-64 container w3-padding-large">
+            <div class="columns is-multiline">
+                {% for post in page.posts %}
+                    <div class="w3-padding-large w3-center column is-4 w3-margin-bottom">
+                        <p class="heavy-font" style="font-weight: 100">{{ post.date }}</p>
+                        <h1 class="w3-xlarge w3-margin-bottom">{{ post.title }}</h1>
+                        <p>{{ post.brief }}</p>
+                        <a href="" class="w3-border-bottom heavy-font" style="font-weight: 100">Read More</a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
