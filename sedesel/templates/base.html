@@ -133,9 +133,10 @@
                         <div class="navbar-item is-paddingless">
                             <v-btn :depressed="false" :ripple="false" rounded
                                    href="{% pageurl self.get_site.root_page %}"
-                                   class="has-text-weight-bold w3-center w3-border w3-white custom-secondary-border-color">
+                                   class="w3-center w3-border w3-white custom-secondary-border-color">
                                 {{ self.get_site.root_page.title }}
                             </v-btn>
+                            &nbsp;
                         </div>
                     {% endif %}
                     {% for child in self.get_site.root_page.get_children %}
@@ -144,13 +145,12 @@
                                 <v-menu :rounded="0">
                                     <template v-slot:activator="{ on, attrs }">
                                         <v-btn :depressed="false" :ripple="false" rounded
-                                               class="w3-border w3-white custom-secondary-border-color"
+                                               class="w3-border w3-white custom-secondary-border-color w3-center"
                                                 {% if child.get_children %}
                                                v-bind="attrs" v-on="on"
                                                 {% else %}
                                                href="{% pageurl child %}"
-                                                {% endif %}
-                                               class="has-text-weight-bold w3-center">
+                                                {% endif %}>
                                             {{ child.title }}
                                             {% if child.get_children %}
                                                 <v-icon>arrow_drop_down</v-icon>
