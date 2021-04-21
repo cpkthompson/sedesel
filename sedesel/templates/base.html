@@ -131,9 +131,9 @@
                 <div class="navbar-end w3-padding-small">
                     {% if self.get_site.root_page.show_in_menus %}
                         <div class="navbar-item is-paddingless">
-                            <v-btn :depressed="false" :ripple="false" rounded text
+                            <v-btn :depressed="false" :ripple="false" rounded
                                    href="{% pageurl self.get_site.root_page %}"
-                                   class="has-text-weight-bold w3-center">
+                                   class="has-text-weight-bold w3-center w3-border w3-white custom-secondary-border-color">
                                 {{ self.get_site.root_page.title }}
                             </v-btn>
                         </div>
