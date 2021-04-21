@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+{% load static wagtailuserbar wagtailcore_tags wagtailsettings_tags sedesel_tags wagtailimages_tags %}
+{% get_settings use_default_site=True %}
+{% block content %}
+    {% if featured_posts %}
+        <v-carousel height="700px" cycle interval="6000">
+            {% for featured_post in featured_posts %}
+                <v-carousel-item>
+                    <v-card tile flat href="{% pageurl featured_post %}">
+                        {% image featured_post.image original as image %}
+                        <v-img src="{{ image.url }}" height="700px">
+                            <div class="{% if image %}bgoverlay w3-text-white{% else %}w3-text-black{% endif %} w3-display-container"
+                                 style="height: 700px">
+                                <div class="w3-display-left container w3-padding-16">
+
+                                    <h1 class="w3-xxxlarge has-text-weight-bold w3-center">{{ featured_post.title }}</h1>
+                                    {% if self.subtitle %}
+                                        <p class="subtitle w3-xlarge w3-center" style="color: inherit">
+                                            {{ featured_post.subtitle|linebreaksbr }}
+                                        </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </v-img>
+                    </v-card>
+                </v-carousel-item>
+            {% endfor %}
+        </v-carousel>
+    {% endif %}
+    <div class="w3-padding-64 w3-container w3-padding-large">
+        <div class="w3-center w3-content">
+            <img src="{% static 'api/Selassie Mensah/logo.svg' %}" style="width: 100px;" alt="">
+            <br>
+            <br>
+            <br>
+        </div>
+        <div class="columns is-multiline is-mobile is-tab">
+            <div class="column is-12">
+                <div class="w3-padding-24 w3-container">
+                    <div class="w3-topbar w3-bottombar custom-secondary-border-color w3-padding-48">
+                        <div class="container">
+                            <div class="columns">
+                                <div class="column is-7">
+                                    <h1 class="w3-xxlarge">Never Miss a New Post.</h1>
+                                </div>
+                                <div class="column is-5">
+                                    <div class="field has-addons">
+                                        <div class="control is-expanded">
+                                            <input placeholder="Enter your email" type="text"
+                                                   class="input is-large is-fullwidth">
+                                        </div>
+                                        <div class="control">
+                                            <button class="button w3-btn custom-secondary-background-color is-large"
+                                                    style="border-radius: 0">
+                                                Subscribe
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="column is-6-desktop is-offset-1-desktop is-12-tablet">
+                <div class="menu-label w3-large">TRAIN OF THOUGHT</div>
+                <div class="columns is-multiline is-centered">
+                    {% for post in posts|slice:":5" %}
+                        <div class="column is-12">
+                            <div class="card w3-white w3-border custom-secondary-border-color">
+                                {% image post.image fill-550x300 as mobile_post_image %}
+
+                                <div class="w3-hide-large w3-hide-medium"
+                                     style="height: 150px;background-position:center;background-image: url('{{ mobile_post_image.url }}')">
+                                </div>
+                                <div class="media">
+                                    <div class="media-left w3-hide-small w3-padding-large w3-padding-32"
+                                         style="width: 265px;height: 100%;padding-right: 0px">
+                                        {% image post.image fill-285x400 as desktop_post_image %}
+                                        <img src="{{ desktop_post_image.url }}">
+                                    </div>
+                                    <div class="media-content w3-padding-large w3-padding-32">
+                                        <p class="heavy-font" style="font-weight: 100">{{ post.date_published }}</p>
+                                        <h1 class="w3-xlarge w3-margin-bottom">{{ post.title }}</h1>
+                                        <p>{{ post.introduction }}</p>
+                                        <a href="{% pageurl post %}" class="w3-border-bottom heavy-font"
+                                           style="font-weight: 100">
+                                            Read more
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    {% if page.more_posts_page %}
+                        <div class="column is-12">
+                            <a href="{% pageurl page.more_posts_page %}"
+                               class="w3-btn w3-block custom-secondary-background-color w3-padding-large">More posts</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="column is-4-desktop is-offset-1-desktop is-12-tablet">
+                <div class="column is-8">
+                    <div class="menu-label w3-large">About me</div>
+                    {% if page.about_me_image %}
+                        {% image page.about_me_image original as about_me_image %}
+                        <v-img size="500px"
+                               src="{{ about_me_image.url }}"></v-img>
+                        <br>
+                    {% endif %}
+                    {% if page.about_me_text %}
+                        <div>
+                            {{ page.about_me_text|linebreaksbr }}
+                        </div>
+                    {% endif %}
+                    {% if page.about_me_page %}
+                        <a href="{% pageurl page.about_me_page %}" class="w3-border-bottom heavy-font"
+                           style="font-weight: 100">Read
+                            More</a>
+                    {% endif %}
+                    <div class="w3-padding-32">
+                        {% if settings.api.Configuration.instagram %}
+                            <div class="w3-padding-large w3-border-top w3-border-bottom custom-secondary-border-color">
+                                <div class="level">
+                                    {% if settings.api.Configuration.instagram %}
+                                        <div class="level-item">
+                                            <a href="{{ settings.api.Configuration.instagram }}">
+                                                <v-icon size="28">mdi-instagram</v-icon>
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                    {% if settings.api.Configuration.facebook %}
+                                        <div class="level-item">
+                                            <a href="{{ settings.api.Configuration.facebook }}">
+                                                <v-icon size="28">mdi-facebook</v-icon>
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                    {% if settings.api.Configuration.twitter %}
+                                        <div class="level-item">
+                                            <a href="{{ settings.api.Configuration.twitter }}">
+                                                <v-icon size="28">mdi-twitter</v-icon>
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                    {% if settings.api.Configuration.youtube %}
+                                        <div class="level-item">
+                                            <a href="{{ settings.api.Configuration.youtube }}">
+                                                <v-icon size="28">mdi-youtube</v-icon>
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                    {% if settings.api.Configuration.linkedin %}
+                                        <div class="level-item">
+                                            <a href="{{ settings.api.Configuration.linkedin }}">
+                                                <v-icon size="28">mdi-linkedin</v-icon>
+                                            </a>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+
+                    </div>
+                    <div class="menu-label w3-large">Subscribe to my newsletter</div>
+                    <div class="control">
+                        <label class="label">Enter your email*</label>
+                        <input type="text" class="w3-padding-16 w3-border custom-secondary-border-color w3-input">
+                        <button class="w3-margin-top w3-btn w3-block custom-secondary-background-color w3-padding-large">
+                            Subscribe
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {{ page.post_stream_body }}
+{% endblock %}

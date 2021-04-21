@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load wagtailimages_tags wagtailcore_tags %}
+{% block content %}
+    <div class="w3-padding-32">
+        <div class="container w3-padding-32">
+            <div class="w3-content w3-border custom-secondary-border-color pa-6 w3-white w3-padding-large">
+                <div class="w3-padding-32 w3-padding-large">
+
+                    {% image page.image fill-1000x400 as image %}
+                    <div>
+                        {{ page.date_published }}
+                    </div>
+                    <h1 class="w3-xxlarge">{{ page.title }}</h1>
+                    <h6 class="w3-padding-16">
+                        <a href="" class="w3-border-bottom w3-text-black">
+                            {{ page.authors|first }}
+                        </a>
+                    </h6>
+                    <p class="w3-margin-top">{{ page.introduction }}</p>
+                    <v-img src="{{ image.url }}"></v-img>
+                    <div class="w3-padding-64">
+                        {{ page.body }}
+                    </div>
+                    <br>
+                    <div class="w3-border-top w3-block custom-secondary-border-color"></div>
+                    <div class="level py-2">
+                        <div class="level-left">
+                            <div class="level-item">
+                                <a>
+                                    <v-icon size="18">mdi-facebook</v-icon>
+                                </a>
+                            </div>
+                            &nbsp;
+                            &nbsp;
+                            <div class="level-item">
+                                <a>
+                                    <v-icon size="18">mdi-twitter</v-icon>
+                                </a>
+                            </div>
+                            &nbsp;
+                            &nbsp;
+                            <div class="level-item">
+                                <a>
+                                    <v-icon size="18">mdi-link</v-icon>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

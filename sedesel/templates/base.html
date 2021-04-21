@@ -38,9 +38,13 @@
             src: url('{% static 'fonts/tt/TTCommons-Bold.ttf' %}') format('truetype');
         }
 
-        div, body, v-app {
+        div, body, v-app, .rich-text p, p {
             font-family: "TTCommons-Regular", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
             font-size: {{ settings.api.Configuration.font_size }};
+        }
+
+        .rich-text p {
+            margin-bottom: 20px;
         }
 
         h1, h2, h3, h4, h5, h6, strong, .heavy-font {
@@ -55,6 +59,15 @@
 
         .bgoverlay {
             background: rgba(0, 0, 0, 0.4);
+        }
+
+        .custom-secondary-border-color {
+            border-color: {{ settings.api.Configuration.secondary_color_hex|default:'white' }} !important;
+        }
+
+        .custom-secondary-background-color {
+            background-color: {{ settings.api.Configuration.secondary_color_hex|default:'unset' }} !important;
+            color: white !important;
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
@@ -81,7 +94,7 @@
                 </div>
             {% endfor %}
         {% endif %}
-        <nav class="navbar w3-padding" role="navigation"
+        <nav class="navbar w3-padding w3-bottombar custom-secondary-border-color" role="navigation"
              style="padding-left: 16px;padding-right: 5px;"
              aria-label="main navigation">
             <div class="navbar-brand">
@@ -90,12 +103,16 @@
                        href="/">
                         {% if settings.api.Configuration.logo %}
                             {% image settings.api.Configuration.logo original as logo %}
-                            <img src="{{ logo.url }}" style="max-width: 70px">
+                            <img src="{{ logo.url }}">
+                            {% if settings.api.Configuration.show_site_name %}
+                                &nbsp;
+                            {% endif %}
+                        {% endif %}
+                        {% if settings.api.Configuration.show_site_name %}
+                            <span class="w3-hide-small menu-label has-text-weight-bold is-marginless w3-text-black">{{ self.get_site.site_name }}</span>
+                            <span class="w3-hide-large w3-hide-medium w3-small menu-label has-text-weight-bold is-marginless w3-text-black">{{ self.get_site.site_name }}</span>
                             &nbsp;
                         {% endif %}
-                        <span class="w3-hide-small menu-label has-text-weight-bold is-marginless w3-text-black">{{ self.get_site.site_name }}</span>
-                        <span class="w3-hide-large w3-hide-medium w3-small menu-label has-text-weight-bold is-marginless w3-text-black">{{ self.get_site.site_name }}</span>
-                        &nbsp;
                     </a>
                 </div>
                 &nbsp;
@@ -126,7 +143,8 @@
                             <div class="navbar-item is-paddingless">
                                 <v-menu :rounded="0">
                                     <template v-slot:activator="{ on, attrs }">
-                                        <v-btn :depressed="false" :ripple="false" rounded text
+                                        <v-btn :depressed="false" :ripple="false" rounded
+                                               class="w3-border w3-white custom-secondary-border-color"
                                                 {% if child.get_children %}
                                                v-bind="attrs" v-on="on"
                                                 {% else %}
@@ -174,15 +192,18 @@
             {% endblock %}
         </div>
 
-        <footer class="w3-padding w3-padding-32 w3-border-top">
-            <div class="container">
+        <footer class="w3-padding w3-padding-32 w3-border-top custom-secondary-border-color">
+            <div class="container w3-padding-large w3-padding-32">
                 <div class="columns is-multiline is-mobile">
                     <div class="column is-12-mobile">
-                        <img src="{{ logo.url }}" style="width: 100px" class="w3-margin-bottom">
-                        &nbsp;
-                        <h1 class="w3-xlarge w3-margin-bottom">
-                            {{ self.get_site.site_name }}
-                        </h1>
+                        <img src="{{ logo.url }}">
+                        {% if settings.api.Configuration.show_site_name %}
+                            <br>
+                            &nbsp;
+                            <h1 class="w3-xlarge w3-margin-bottom">
+                                {{ self.get_site.site_name }}
+                            </h1>
+                        {% endif %}
                         <div>
                             {{ settings.api.Configuration.address_1 }}
                             <br>
@@ -190,7 +211,10 @@
                                 {{ settings.api.Configuration.address_2 }}
                                 <br>
                             {% endif %}
-                            {{ settings.api.Configuration.city }}, {{ settings.api.Configuration.country }}
+                            {% if settings.api.Configuration.city %}
+                                {{ settings.api.Configuration.city }},
+                            {% endif %}
+                            {{ settings.api.Configuration.country }}
                         </div>
                     </div>
                     <div class="column is-6-mobile is-hidden-mobile">
@@ -279,7 +303,6 @@
                         <br>
                     </small>
                 </div>
-
             </div>
         </footer>
     </v-app>

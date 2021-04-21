@@ -1,6 +1,8 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 {% image self.image original as image %}
-<v-img src="{{ image.url }}" max-height="{{ self.dimensions }}" alt="{{ self.attribution }}"></v-img>
-{% if self.caption %}
-    <h3 class="w3-padding-large">{{ self.caption }}</h3>
-{% endif %}
+<div class="py-2">
+    <v-img src="{{ image.url }}" max-height="{{ self.dimensions }}" alt="{{ self.attribution }}"></v-img>
+    {% if self.caption %}
+        <h3 class="w3-padding-large">{{ self.caption }}</h3>
+    {% endif %}
+</div>

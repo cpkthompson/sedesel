@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load wagtailimages_tags wagtailcore_tags %}
+
+{% block content %}
+    {{ page.pre_stream_body }}
+    <div class="w3-content w3-padding-64">
+        {% for post in posts %}
+            <div class="column is-12">
+                <div class="card w3-white w3-border custom-secondary-border-color">
+                    {% image post.image fill-550x300 as mobile_post_image %}
+
+                    <div class="w3-hide-large w3-hide-medium"
+                         style="height: 150px;background-position:center;background-image: url('{{ mobile_post_image.url }}')">
+                    </div>
+                    <div class="media">
+                        <div class="media-left w3-hide-small w3-padding-large w3-padding-32"
+                             style="width: 265px;height: 100%;padding-right: 0px">
+                            {% image post.image fill-285x400 as desktop_post_image %}
+                            <img src="{{ desktop_post_image.url }}">
+                        </div>
+                        <div class="media-content w3-padding-large w3-padding-32">
+                            <p class="heavy-font" style="font-weight: 100">{{ post.date_published }}</p>
+                            <h1 class="w3-xlarge w3-margin-bottom">{{ post.title }}</h1>
+                            <p>{{ post.introduction }}</p>
+                            <a href="{% pageurl post %}" class="w3-border-bottom heavy-font"
+                               style="font-weight: 100">
+                                Read more
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% endblock %}

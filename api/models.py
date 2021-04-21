@@ -1,19 +1,23 @@
 from django.db import models
-from django.shortcuts import render
+from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
-from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel, InlinePanel, MultiFieldPanel, FieldRowPanel
+from taggit.models import TaggedItemBase
+from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel, InlinePanel, MultiFieldPanel, FieldRowPanel, \
+    PageChooserPanel
 from wagtail.contrib.forms.models import AbstractFormField, AbstractEmailForm
 from wagtail.contrib.settings.models import BaseSetting
 from wagtail.contrib.settings.registry import register_setting
 from wagtail.core.blocks import (
-    CharBlock, ChoiceBlock, StreamBlock, StructBlock, TextBlock, ListBlock, PageChooserBlock, IntegerBlock, )
+    CharBlock, ChoiceBlock, StreamBlock, StructBlock, TextBlock, ListBlock, PageChooserBlock, IntegerBlock,
+    RichTextBlock, )
 from wagtail.core.fields import StreamField, RichTextField
-from wagtail.core.models import Page
+from wagtail.core.models import Page, Orderable
 from wagtail.embeds.blocks import EmbedBlock
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.search import index
+from wagtail.snippets.edit_handlers import SnippetChooserPanel
 from wagtail.snippets.models import register_snippet
 
 from accounts.models import PeopleCollection
@@ -99,6 +103,16 @@ class IntroducerBlock(StructBlock):
 
     class Meta:
         template = "blocks/introducer.html"
+
+
+class BlockQuote(StructBlock):
+    text = TextBlock()
+    attribute_name = CharBlock(
+        blank=True, required=False, label='e.g. Mary Berry')
+
+    class Meta:
+        icon = "fa-quote-left"
+        template = "blocks/blockquote.html"
 
 
 class HeroBlock(StructBlock):
@@ -239,6 +253,7 @@ class Configuration(BaseSetting):
     linkedin = models.URLField(blank=True)
     facebook = models.URLField(blank=True)
     twitter = models.URLField(blank=True)
+    youtube = models.URLField(blank=True)
     instagram = models.URLField(blank=True)
 
     logo = models.ForeignKey(
@@ -253,6 +268,8 @@ class Configuration(BaseSetting):
     background_color_class = models.CharField(max_length=15, blank=True, default='w3-light-grey')
     font_size = models.CharField(max_length=15, blank=True, default=1, null=True)
 
+    show_site_name = models.BooleanField(default=True)
+
     panels = [
         MultiFieldPanel([
             FieldPanel('social_heading'),
@@ -260,6 +277,7 @@ class Configuration(BaseSetting):
             FieldPanel('facebook', classname='col6'),
             FieldPanel('twitter', classname='col6'),
             FieldPanel('instagram', classname='col6'),
+            FieldPanel('youtube', classname='col6'),
         ], 'Social Media'),
         MultiFieldPanel([
             FieldPanel('address_1'),
@@ -272,6 +290,7 @@ class Configuration(BaseSetting):
             FieldPanel('font_size', classname='col6'),
             FieldPanel('background_color_class', classname='col6'),
             FieldPanel('primary_color_hex', classname='col6'),
+            FieldPanel('show_site_name', classname='col6'),
             FieldPanel('secondary_color_hex', classname='col6'),
         ], 'Basic settings'),
     ]
@@ -293,40 +312,109 @@ class PostCollection(index.Indexed, ClusterableModel):
         return self.title
 
 
-class PostsIndexPage(Page):
+class BlogStreamBlock(StreamBlock):
+    heading_block = HeadingBlock()
+    paragraph_block = RichTextBlock(
+        icon="fa-paragraph",
+    )
+    image_block = ImageBlock()
+    block_quote = BlockQuote()
+    embed_block = EmbedBlock(
+        help_text='Insert an embed URL e.g https://www.youtube.com/embed/SGJFWirQ3ks',
+        icon="fa-s15",
+        template="blocks/embed_block.html")
+
+
+class BlogPeopleRelationship(Orderable, models.Model):
+    page = ParentalKey(
+        'BlogPage', related_name='blog_person_relationship', on_delete=models.CASCADE
+    )
+    people = models.ForeignKey(
+        'accounts.People', related_name='person_blog_relationship', on_delete=models.CASCADE
+    )
+    panels = [
+        SnippetChooserPanel('people')
+    ]
+
+
+class BlogPageTag(TaggedItemBase):
+    content_object = ParentalKey('BlogPage', related_name='tagged_items', on_delete=models.CASCADE)
+
+
+class BlogPage(Page):
+    introduction = models.TextField(help_text='Text to describe the page', blank=True)
+    image = models.ForeignKey('wagtailimages.Image', null=True, blank=True, on_delete=models.SET_NULL, related_name='+',
+                              help_text='Landscape mode only; horizontal width between 1000px and 3000px.')
+    body = StreamField(
+        BlogStreamBlock(), verbose_name="Page body", blank=True
+    )
+    subtitle = models.CharField(blank=True, max_length=255)
+    tags = ClusterTaggableManager(through=BlogPageTag, blank=True)
+    date_published = models.DateField("Date article published", blank=True, null=True)
+    is_featured = models.BooleanField(default=False)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('subtitle', classname="full"),
+        FieldPanel('introduction', classname="full"),
+        FieldPanel('is_featured'),
+        ImageChooserPanel('image'),
+        StreamFieldPanel('body'),
+        FieldPanel('date_published'),
+        InlinePanel('blog_person_relationship', label="Author(s)", panels=None, min_num=1),
+        FieldPanel('tags'),
+    ]
+
+    search_fields = Page.search_fields + [
+        index.SearchField('body'),
+    ]
+
+    def authors(self):
+        authors = [
+            n.people for n in self.blog_person_relationship.all()
+        ]
+
+        return authors
+
+
+class BlogIndexPage(Page):
     pre_stream_body = StreamField(StandardStreamBlock(), blank=True, null=True)
-    posts_collection = models.ForeignKey(PostCollection, on_delete=models.SET_NULL, null=True, blank=True)
     post_stream_body = StreamField(StandardStreamBlock(), blank=True, null=True)
+
     content_panels = Page.content_panels + [
         StreamFieldPanel('pre_stream_body'),
-        FieldPanel('posts_collection', classname="full"),
         StreamFieldPanel('post_stream_body'),
     ]
 
-    def serve(self, request):
-        context = super().serve(request).context_data
-        context.update({
-            'posts': [
-                {
-                    'date': '7/24/19',
-                    'title': 'Six Ways to (Legally) Work Anywhere',
-                    'brief': 'One of the most frequent questions I get is about how I’ve been able to pick up temporary work throughout my travels without falling afoul of the law. ',
-                },
-                {
-                    'date': '7/24/19',
-                    'title': 'Highlights from Mali',
-                    'brief': 'Frequent readers will know that Western Africa is one of my favorite parts of the world, so my expectations were already high when I secured a lift to Bamako.',
-                },
-                {
-                    'date': '7/24/19',
-                    'title': 'Highlights from Mali',
-                    'brief': 'Frequent readers will know that Western Africa is one of my favorite parts of the world, so my expectations were already high when I secured a lift to Bamako.',
-                },
-                {
-                    'date': '7/24/19',
-                    'title': 'Desert Etiquette',
-                    'brief': 'Just as sailors abide by the laws of the sea, desert inhabitants live by a code that keeps them safe in this often extreme environment. Lesson number one: Your water is everyone’s water.',
-                },
-            ]
-        })
-        return render(request, "api/harman-demo.template.html", context)
+    def children(self):
+        return self.get_children().specific().live()
+
+    def get_context(self, request):
+        context = super(BlogIndexPage, self).get_context(request)
+        posts = BlogPage.objects.descendant_of(
+            self).live().order_by(
+            '-date_published')
+        context['featured_posts'] = posts.filter(is_featured=True)
+        context['posts'] = posts
+        return context
+
+    def serve_preview(self, request, mode_name):
+        return self.serve(request)
+
+
+class SelassieMensahIndex(BlogIndexPage):
+    about_me_image = models.ForeignKey('wagtailimages.Image', null=True, blank=True, on_delete=models.SET_NULL,
+                                       related_name='+')
+    about_me_text = models.TextField(blank=True)
+    about_me_page = models.ForeignKey('wagtailcore.Page', null=True, blank=True, on_delete=models.SET_NULL,
+                                      related_name='+')
+    more_posts_page = models.ForeignKey('wagtailcore.Page', null=True, blank=True, on_delete=models.SET_NULL,
+                                        related_name='+')
+
+    content_panels = Page.content_panels + [
+        StreamFieldPanel('pre_stream_body'),
+        ImageChooserPanel('about_me_image'),
+        FieldPanel('about_me_text'),
+        PageChooserPanel('about_me_page'),
+        StreamFieldPanel('post_stream_body'),
+        PageChooserPanel('more_posts_page'),
+    ]
