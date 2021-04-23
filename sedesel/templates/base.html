@@ -27,6 +27,8 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;900&display=swap"
           rel="stylesheet">
+    {{ settings.api.Configuration.extra_head_content|safe }}
+
     <style>
         @font-face {
             font-family: 'TTCommons-Regular';
