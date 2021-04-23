@@ -255,6 +255,7 @@ class Configuration(BaseSetting):
     twitter = models.URLField(blank=True)
     youtube = models.URLField(blank=True)
     instagram = models.URLField(blank=True)
+    extra_head_content = models.TextField(blank=True)
 
     logo = models.ForeignKey(
         'wagtailimages.Image',
@@ -285,6 +286,9 @@ class Configuration(BaseSetting):
             FieldPanel('city', classname='col6'),
             FieldPanel('country', classname='col6'),
         ], 'Address'),
+        MultiFieldPanel([
+            FieldPanel('extra_head_content'),
+        ], 'Setup'),
         MultiFieldPanel([
             ImageChooserPanel('logo', ),
             FieldPanel('font_size', classname='col6'),
