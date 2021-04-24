@@ -1,6 +1,7 @@
+from django import forms
 from django.db import models
 from modelcluster.contrib.taggit import ClusterTaggableManager
-from modelcluster.fields import ParentalKey
+from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from modelcluster.models import ClusterableModel
 from taggit.models import TaggedItemBase
 from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel, InlinePanel, MultiFieldPanel, FieldRowPanel, \
@@ -13,6 +14,7 @@ from wagtail.core.blocks import (
     RichTextBlock, )
 from wagtail.core.fields import StreamField, RichTextField
 from wagtail.core.models import Page, Orderable
+from wagtail.documents.models import Document
 from wagtail.embeds.blocks import EmbedBlock
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.images.edit_handlers import ImageChooserPanel
@@ -225,6 +227,23 @@ class PeoplePage(Page):
             FieldPanel('classes_outer'),
             FieldPanel('classes_inner'),
         ], 'People'),
+        StreamFieldPanel('post_stream_body'),
+    ]
+
+
+class DocumentsPage(Page):
+    pre_stream_body = StreamField(StandardStreamBlock(), blank=True, null=True)
+    documents = ParentalManyToManyField(Document, blank=True)
+    post_stream_body = StreamField(StandardStreamBlock(), blank=True, null=True)
+    classes_outer = models.CharField(max_length=200, blank=True)
+    classes_inner = models.CharField(max_length=200, blank=True)
+    content_panels = Page.content_panels + [
+        StreamFieldPanel('pre_stream_body'),
+        MultiFieldPanel([
+            FieldPanel('documents', widget=forms.CheckboxSelectMultiple),
+            FieldPanel('classes_outer'),
+            FieldPanel('classes_inner'),
+        ], 'Documents'),
         StreamFieldPanel('post_stream_body'),
     ]
 
