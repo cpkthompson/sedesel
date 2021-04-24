@@ -32,21 +32,23 @@
                         <v-card height="600px" style="overflow-y: hidden" class="pha-deep-blue">
                             <v-layout>
                                 <v-flex xs0 sm5 md5 lg5>
-                                    {% image person.photo fill-400x600 as photo %}
-                                    <v-img
-                                            src="{{ photo.url }}" alt="{{ person.get_full_name }}"
-                                            lazy-src="{{ photo.url }}"
-                                            class="grey lighten-2">
-                                        <v-layout
-                                                slot="placeholder"
-                                                fill-height
-                                                align-center
-                                                justify-center
-                                                ma-0>
-                                            <v-progress-circular indeterminate
-                                                                 color="grey lighten-5"></v-progress-circular>
-                                        </v-layout>
-                                    </v-img>
+                                    {% if person.photo %}
+                                        {% image person.photo fill-400x600 as photo %}
+                                        <v-img
+                                                src="{{ photo.url }}" alt="{{ person.get_full_name }}"
+                                                lazy-src="{{ photo.url }}"
+                                                class="grey lighten-2">
+                                            <v-layout
+                                                    slot="placeholder"
+                                                    fill-height
+                                                    align-center
+                                                    justify-center
+                                                    ma-0>
+                                                <v-progress-circular indeterminate
+                                                                     color="grey lighten-5"></v-progress-circular>
+                                            </v-layout>
+                                        </v-img>
+                                    {% endif %}
                                 </v-flex>
                                 <v-flex xs12 sm7 md7 lg7 class="w3-padding w3-padding-32">
                                     <v-card-title primary-title>
