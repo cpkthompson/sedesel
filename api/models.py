@@ -247,6 +247,10 @@ class DocumentsPage(Page):
         StreamFieldPanel('post_stream_body'),
     ]
 
+    @property
+    def sorted_documents(self):
+        return self.documents.order_by('title')
+
 
 @register_snippet
 class Favicon(models.Model):
