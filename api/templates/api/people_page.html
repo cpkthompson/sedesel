@@ -7,19 +7,21 @@
             {% image person.photo fill-540x680 as photo %}
             <div class="column {{ page.classes_inner }}">
                 <div class="card-image">
-                    <figure class="image w3-margin">
-                        <v-img src="{{ photo.url }}" alt="{{ person.get_full_name }}" lazy-src="{{ photo.url }}"
-                               class="grey lighten-2">
-                            <v-layout
-                                    slot="placeholder"
-                                    fill-height
-                                    align-center
-                                    justify-center
-                                    ma-0>
-                                <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
-                            </v-layout>
-                        </v-img>
-                    </figure>
+                    {% if person.photo %}
+                        <figure class="image w3-margin">
+                            <v-img src="{{ photo.url }}" alt="{{ person.get_full_name }}" lazy-src="{{ photo.url }}"
+                                   class="grey lighten-2">
+                                <v-layout
+                                        slot="placeholder"
+                                        fill-height
+                                        align-center
+                                        justify-center
+                                        ma-0>
+                                    <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                                </v-layout>
+                            </v-img>
+                        </figure>
+                    {% endif %}
                 </div>
                 <h1 class="w3-padding w3-center"
                     style="margin-top: 10px">{{ person.get_full_name }}</h1>
