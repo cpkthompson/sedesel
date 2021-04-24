@@ -243,3 +243,12 @@ MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN,
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 WAGTAIL_APPEND_SLASH = False
+
+# email
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = config('EMAIL_HOST', cast=str, default='EMAIL_HOST')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', cast=str, default='EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='EMAIL_HOST_PASSWORD', cast=str)
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='DEFAULT_FROM_EMAIL')
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
