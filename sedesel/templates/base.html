@@ -221,8 +221,6 @@
                     </div>
                     <div class="column is-12-mobile">
                         <div class="columns is-multiline">
-
-
                             {% for child in self.get_site.root_page.get_children %}
                                 {% if child.show_in_menus %}
                                     <div class="column is-6-mobile is-paddingless">
@@ -243,9 +241,9 @@
                                         {% endif %}
                                         <br>
                                     </div>
-                                    </div>
                                 {% endif %}
                             {% endfor %}
+                        </div>
                     </div>
                 </div>
                 <div class="column is-6-mobile">
